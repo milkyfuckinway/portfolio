@@ -1,0 +1,112 @@
+.note {
+  background-color: #ececec;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  left: 50%;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+}
+
+.note__header {
+  align-items: center;
+  background-color: $note-header;
+  color: $note-header-items;
+  display: flex;
+  justify-content: space-between;
+  min-height: 30px;
+  padding: 0 10px;
+  width: 100%;
+}
+
+.note__address {
+  color: $note-header-items;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+}
+
+.note__buttons {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(3, 22px);
+  height: 22px;
+  justify-content: end;
+}
+
+.note__button {
+  background-color: transparent;
+  border: 1px solid $note-header-items;
+  height: 100%;
+  padding: 0;
+  position: relative;
+  width: 100%;
+
+  &::after,
+  &::before {
+    content: "";
+    position: absolute;
+  }
+}
+
+.note__collapse {
+  &::after {
+    background-color: $note-header-items;
+    bottom: 4px;
+    height: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+  }
+}
+
+.note__expand {
+  &::after {
+    background-color: transparent;
+    border: 1px solid $note-header-items;
+    bottom: 2px;
+    height: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+  }
+}
+
+.note__close {
+  &::after,
+  &::before {
+    background-color: $note-header-items;
+    bottom: 2px;
+    height: 1px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+.note__content {
+  background-color: #d1d1d1;
+  flex-grow: 1;
+  height: auto;
+  padding: 10px;
+  width: 100%;
+}
+
+.note__footer {
+  background-color: #999999;
+  height: 30px;
+  width: 100%;
+}
