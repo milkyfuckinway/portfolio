@@ -73,9 +73,7 @@ noteList.forEach((item) => {
   });
 
   noteHeader.addEventListener(events[deviceType].down, (evt) => {
-    if (!deviceType === 'touch') {
-      evt.preventDefault();
-    }
+    evt.preventDefault();
     initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
     initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
     moveElement = true;
@@ -85,25 +83,21 @@ noteList.forEach((item) => {
     initialzIndex = newzIndex;
   });
 
-  function stopMovement () {
+  function stopMovement() {
     moveElement = false;
     noteWindow.removeEventListener(events[deviceType].move, onMoveEvent);
   }
 
   function onMoveEvent(evt) {
-    if (moveElement) {
-      if (!deviceType === 'touch') {
-        evt.preventDefault();
-      }
-      const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
-      const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
-      noteWindow.style.left = `${noteWindow.offsetLeft - (initialX - newX)}px`;
-      noteWindow.style.top = `${noteWindow.offsetTop - (initialY - newY)}px`;
-      initialX = newX;
-      initialY = newY;
-      noteWindow.addEventListener('mouseleave', stopMovement);
-      noteWindow.addEventListener(events[deviceType].up, stopMovement);
-    }
+    evt.preventDefault();
+    const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
+    const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
+    noteWindow.style.left = `${noteWindow.offsetLeft - (initialX - newX)}px`;
+    noteWindow.style.top = `${noteWindow.offsetTop - (initialY - newY)}px`;
+    initialX = newX;
+    initialY = newY;
+    noteWindow.addEventListener('mouseleave', stopMovement);
+    noteWindow.addEventListener(events[deviceType].up, stopMovement);
   }
 });
 
