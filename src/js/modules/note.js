@@ -44,29 +44,35 @@ noteList.forEach((item) => {
   const noteHeader = item.querySelector('.note__header');
   const noteFile = item.querySelector('.note__file');
 
-  noteFile.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.remove('note__collapsed');
+  const openWindow = () => {
+    noteWindow.classList.remove('note__window--collapsed');
+    noteWindow.style.left = '20px';
+    noteWindow.style.top = '20px';
     stopMovement();
-  });
+    noteFile.removeEventListener(events[deviceType].click,openWindow);
+  };
+
+  noteFile.addEventListener(events[deviceType].click,openWindow);
 
   buttonCollapse.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.add('note__collapsed');
+    noteWindow.classList.add('note__window--collapsed');
     const newReference = document.createElement('div');
     newReference.classList.add('note__reference');
     newReference.textContent = item.children[0].textContent;
     noteFooter.appendChild(newReference);
     newReference.addEventListener(events[deviceType].click, () => {
       newReference.remove();
-      noteWindow.classList.remove('note__collapsed');
+      noteWindow.classList.remove('note__window--collapsed');
     });
   });
 
   buttonClose.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.add('note__collapsed');
+    noteWindow.classList.add('note__window--collapsed');
+    noteFile.addEventListener(events[deviceType].click,openWindow);
   });
 
   buttonExpand.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.remove('note__collapsed');
+    noteWindow.classList.remove('note__window--collapsed');
   });
 
   noteWindow.addEventListener(events[deviceType].click, () => {
