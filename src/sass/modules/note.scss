@@ -1,21 +1,61 @@
-.notebook {
-  display: flex;
-  height: 100vh;
+.notebook__content {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: repeat(auto-fill, 75px);
+  grid-template-rows: repeat(auto-fit, 75px);
+  min-height: calc(100vh - 30px);
   overflow: hidden;
-  padding: 20px;
+  padding: 5px;
   position: relative;
-  width: 100vw;
 }
 
-.note {
+.note__footer {
+  display: flex;
+  height: 30px;
+}
+
+.note__reference {
+  border: 1px solid $note-header;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: auto;
+}
+
+.note__file {
+  display: grid;
+  grid-template-rows: 60px 15px;
+
+  &:hover {
+    outline: 1px solid #000000;
+  }
+}
+
+.note__file-icon {
+  background: url("../img/svg/file.svg") center/ contain no-repeat;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.note__file-name {
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.note__window {
   background-color: #ececec;
   display: flex;
   flex-direction: column;
   height: auto;
   margin: 0 auto;
-  max-width: 100%;
+  max-width: calc(100% - 40px);
   position: absolute;
-  width: max-content;
+}
+
+.note__collapsed {
+  display: none;
 }
 
 .note__header {
@@ -110,11 +150,5 @@
   flex-grow: 1;
   height: auto;
   padding: 10px;
-  width: 100%;
-}
-
-.note__footer {
-  background-color: #999999;
-  height: 30px;
   width: 100%;
 }
