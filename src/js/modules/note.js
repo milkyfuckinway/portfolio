@@ -82,6 +82,7 @@ noteList.forEach((item) => {
   });
 
   noteHeader.addEventListener(events[deviceType].down, (evt) => {
+    evt.preventDefault();
     const newzIndex = initialzIndex + 2;
     noteWindow.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
