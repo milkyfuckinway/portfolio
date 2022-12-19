@@ -68,11 +68,20 @@
   height: auto;
   margin: 0 auto;
   max-width: calc(100% - 40px);
+  overflow-y: scroll;
   position: absolute;
 }
 
 .note__window--collapsed {
   display: none;
+}
+
+.note__window--fullscreen {
+  height: 100%;
+  left: 0;
+  max-width: 100%;
+  top: 0;
+  width: 100%;
 }
 
 .note__header {

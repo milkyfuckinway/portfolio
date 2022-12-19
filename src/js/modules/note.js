@@ -48,10 +48,10 @@ noteList.forEach((item) => {
     noteWindow.style.left = '20px';
     noteWindow.style.top = '20px';
     stopMovement();
-    noteFile.removeEventListener(events[deviceType].down,openWindow);
+    noteFile.removeEventListener(events[deviceType].down, openWindow);
   };
 
-  noteFile.addEventListener(events[deviceType].down,openWindow);
+  noteFile.addEventListener(events[deviceType].down, openWindow);
 
   buttonCollapse.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.add('note__window--collapsed');
@@ -68,11 +68,16 @@ noteList.forEach((item) => {
   buttonClose.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.add('note__window--collapsed');
     noteFile.classList.remove('note__file--active');
-    noteFile.addEventListener(events[deviceType].down,openWindow);
+    noteFile.addEventListener(events[deviceType].down, openWindow);
   });
 
   buttonExpand.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.remove('note__window--collapsed');
+    if (noteWindow.classList.contains('note__window--fullscreen')) {
+      noteWindow.classList.remove('note__window--fullscreen');
+    } else {
+      noteWindow.classList.add('note__window--fullscreen');
+    }
   });
 
   noteWindow.addEventListener(events[deviceType].down, () => {
