@@ -36,7 +36,9 @@ isTouchDevice();
 noteList.forEach((item) => {
   item.addEventListener(events[deviceType].down, (evt) => {
     if (evt.target.classList.contains('note__header')) {
-      evt.preventDefault();
+      if(!deviceType === 'touch') {
+        evt.preventDefault();
+      }
       initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
       initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
       moveElement = true;
@@ -55,7 +57,9 @@ noteList.forEach((item) => {
   function onMoveEvent(evt) {
     console.log('onMoveEvent');
     if (moveElement) {
-      evt.preventDefault();
+      if(!deviceType === 'touch') {
+        evt.preventDefault();
+      }
       const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
       const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
       item.style.left = `${item.offsetLeft - (initialX - newX)}px`;
@@ -67,11 +71,12 @@ noteList.forEach((item) => {
     }
   }
 });
-let firstPositionX = 50;
-let firstPositionY = 50;
+let firstPositionX = 0;
+let firstPositionY = -25;
 const randomPosition = () => {
-  noteList.forEach((item) => {
-    const newPositionX = firstPositionX + 25;
+  noteList.forEach((item, index) => {
+    console.log(index);
+    const newPositionX = firstPositionX + 10;
     const newPositionY = firstPositionY + 35;
     const newzIndex = initialzIndex + 2;
     item.style.left = `${newPositionX}px`;
@@ -80,7 +85,15 @@ const randomPosition = () => {
     firstPositionX = newPositionX;
     firstPositionY = newPositionY;
     initialzIndex = newzIndex;
+    if (index === 2) {
+      firstPositionX = 0;
+    }
   }
   );
 };
 randomPosition();
+
+
+document.addEventListener(events[deviceType].move, (evt) => {
+  console.log(evt, evt.target);
+})

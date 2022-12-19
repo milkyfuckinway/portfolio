@@ -1,11 +1,21 @@
+.notebook {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  padding: 20px;
+  position: relative;
+  width: 100vw;
+}
+
 .note {
   background-color: #ececec;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: auto;
   margin: 0 auto;
+  max-width: 100%;
   position: absolute;
-  width: 300px;
+  width: max-content;
 }
 
 .note__header {
