@@ -69,15 +69,16 @@ noteList.forEach((item) => {
     noteWindow.classList.remove('note__collapsed');
   });
 
-  noteWindow.addEventListener(events[deviceType].click, (evt) => {
-    evt.preventDefault();
+  noteWindow.addEventListener(events[deviceType].click, () => {
     const newzIndex = initialzIndex + 2;
     noteWindow.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
   });
 
   noteHeader.addEventListener(events[deviceType].down, (evt) => {
-    evt.preventDefault();
+    const newzIndex = initialzIndex + 2;
+    noteWindow.style.zIndex = `${newzIndex}`;
+    initialzIndex = newzIndex;
     initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
     initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
     moveElement = true;
@@ -87,11 +88,9 @@ noteList.forEach((item) => {
   function stopMovement() {
     moveElement = false;
     document.removeEventListener(events[deviceType].move, onMoveEvent);
-    document.removeEventListener('mouseleave', stopMovement);
   }
 
   function onMoveEvent(evt) {
-    evt.preventDefault();
     if (moveElement) {
       const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
       const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
@@ -100,27 +99,6 @@ noteList.forEach((item) => {
       initialX = newX;
       initialY = newY;
     }
-    document.addEventListener('mouseleave', stopMovement);
     document.addEventListener(events[deviceType].up, stopMovement);
   }
 });
-
-// let firstPositionX = 0;
-// let firstPositionY = -25;
-// const randomPosition = () => {
-//   noteList.forEach((item, index) => {
-//     const newPositionX = firstPositionX + 10;
-//     const newPositionY = firstPositionY + 35;
-//     const newzIndex = initialzIndex + 2;
-//     item.style.left = `${newPositionX}px`;
-//     item.style.top = `${newPositionY}px`;
-//     item.style.zIndex = newzIndex;
-//     firstPositionX = newPositionX;
-//     firstPositionY = newPositionY;
-//     initialzIndex = newzIndex;
-//     if (index === 2) {
-//       firstPositionX = 0;
-//     }
-//   });
-// };
-// randomPosition();
