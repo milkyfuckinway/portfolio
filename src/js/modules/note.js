@@ -48,30 +48,30 @@ noteList.forEach((item) => {
     noteWindow.style.left = '20px';
     noteWindow.style.top = '20px';
     stopMovement();
-    noteFile.removeEventListener(events[deviceType].down, openWindow);
+    noteFile.removeEventListener(events[deviceType].up, openWindow);
   };
 
-  noteFile.addEventListener(events[deviceType].down, openWindow);
+  noteFile.addEventListener(events[deviceType].up, openWindow);
 
-  buttonCollapse.addEventListener(events[deviceType].down, () => {
+  buttonCollapse.addEventListener(events[deviceType].up, () => {
     noteWindow.classList.add('note__window--collapsed');
     const newReference = document.createElement('div');
     newReference.classList.add('note__reference');
     newReference.textContent = item.children[0].textContent;
     noteFooter.appendChild(newReference);
-    newReference.addEventListener(events[deviceType].down, () => {
+    newReference.addEventListener(events[deviceType].up, () => {
       newReference.remove();
       noteWindow.classList.remove('note__window--collapsed');
     });
   });
 
-  buttonClose.addEventListener(events[deviceType].down, () => {
+  buttonClose.addEventListener(events[deviceType].up, () => {
     noteWindow.classList.add('note__window--collapsed');
     noteFile.classList.remove('note__file--active');
-    noteFile.addEventListener(events[deviceType].down, openWindow);
+    noteFile.addEventListener(events[deviceType].up, openWindow);
   });
 
-  buttonExpand.addEventListener(events[deviceType].down, () => {
+  buttonExpand.addEventListener(events[deviceType].up, () => {
     noteWindow.classList.remove('note__window--collapsed');
     if (noteWindow.classList.contains('note__window--fullscreen')) {
       noteWindow.classList.remove('note__window--fullscreen');
@@ -95,7 +95,9 @@ noteList.forEach((item) => {
     initialzIndex = newzIndex;
     initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
     initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
-    moveElement = true;
+    if (!noteWindow.classList.contains('note__window--fullscreen')) {
+      moveElement = true;
+    }
     document.addEventListener(events[deviceType].move, onMoveEvent);
   });
 
