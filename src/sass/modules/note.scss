@@ -1,6 +1,7 @@
 .notebook__content {
   display: grid;
   flex-grow: 1;
+  gap: 5px;
   grid-template-columns: repeat(auto-fill, 75px);
   grid-template-rows: repeat(auto-fit, 75px);
   min-height: calc(100vh - 30px);
@@ -10,8 +11,10 @@
 }
 
 .note__footer {
+  bottom: 0;
   display: flex;
   height: 30px;
+  position: fixed;
 }
 
 .note__reference {
@@ -27,21 +30,35 @@
   grid-template-rows: 60px 15px;
 
   &:hover {
-    outline: 1px solid #000000;
+    background-color: #ececec;
+    box-shadow: -3px 3px 0 #c0c0c0;
+    outline: 1px dotted #000000;
   }
 }
 
+.note__file--active {
+  background-color: #ececec;
+  box-shadow: -3px 3px 0 #c0c0c0;
+  outline: 1px dotted #000000;
+  outline-style: dotted;
+}
+
 .note__file-icon {
-  background: url("../img/svg/file.svg") center/ contain no-repeat;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   width: 100%;
+
+  & svg {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .note__file-name {
   font-size: 12px;
   overflow: hidden;
+  text-align: center;
 }
 
 .note__window {

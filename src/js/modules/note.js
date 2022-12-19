@@ -44,6 +44,7 @@ noteList.forEach((item) => {
 
   const openWindow = () => {
     noteWindow.classList.remove('note__window--collapsed');
+    noteFile.classList.add('note__file--active');
     noteWindow.style.left = '20px';
     noteWindow.style.top = '20px';
     stopMovement();
@@ -66,6 +67,7 @@ noteList.forEach((item) => {
 
   buttonClose.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.add('note__window--collapsed');
+    noteFile.classList.remove('note__file--active');
     noteFile.addEventListener(events[deviceType].down,openWindow);
   });
 
