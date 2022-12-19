@@ -11,13 +11,11 @@ const events = {
     down: 'mousedown',
     move: 'mousemove',
     up: 'mouseup',
-    click: 'click',
   },
   touch: {
     down: 'touchstart',
     move: 'touchmove',
     up: 'touchend',
-    click: 'click',
   },
 };
 
@@ -49,40 +47,42 @@ noteList.forEach((item) => {
     noteWindow.style.left = '20px';
     noteWindow.style.top = '20px';
     stopMovement();
-    noteFile.removeEventListener(events[deviceType].click,openWindow);
+    noteFile.removeEventListener(events[deviceType].down,openWindow);
   };
 
-  noteFile.addEventListener(events[deviceType].click,openWindow);
+  noteFile.addEventListener(events[deviceType].down,openWindow);
 
-  buttonCollapse.addEventListener(events[deviceType].click, () => {
+  buttonCollapse.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.add('note__window--collapsed');
     const newReference = document.createElement('div');
     newReference.classList.add('note__reference');
     newReference.textContent = item.children[0].textContent;
     noteFooter.appendChild(newReference);
-    newReference.addEventListener(events[deviceType].click, () => {
+    newReference.addEventListener(events[deviceType].down, () => {
       newReference.remove();
       noteWindow.classList.remove('note__window--collapsed');
     });
   });
 
-  buttonClose.addEventListener(events[deviceType].click, () => {
+  buttonClose.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.add('note__window--collapsed');
-    noteFile.addEventListener(events[deviceType].click,openWindow);
+    noteFile.addEventListener(events[deviceType].down,openWindow);
   });
 
-  buttonExpand.addEventListener(events[deviceType].click, () => {
+  buttonExpand.addEventListener(events[deviceType].down, () => {
     noteWindow.classList.remove('note__window--collapsed');
   });
 
-  noteWindow.addEventListener(events[deviceType].click, () => {
+  noteWindow.addEventListener(events[deviceType].down, () => {
     const newzIndex = initialzIndex + 2;
     noteWindow.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
   });
 
   noteHeader.addEventListener(events[deviceType].down, (evt) => {
-    evt.preventDefault();
+    if (evt.cancelable) {
+      evt.preventDefault();
+    }
     const newzIndex = initialzIndex + 2;
     noteWindow.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
