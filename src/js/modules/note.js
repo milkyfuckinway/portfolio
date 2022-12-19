@@ -55,7 +55,6 @@ noteList.forEach((item) => {
     newReference.classList.add('note__reference');
     newReference.textContent = item.children[0].textContent;
     noteFooter.appendChild(newReference);
-    stopMovement();
     newReference.addEventListener(events[deviceType].click, () => {
       newReference.remove();
       noteWindow.classList.remove('note__collapsed');
@@ -64,12 +63,17 @@ noteList.forEach((item) => {
 
   buttonClose.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.add('note__collapsed');
-    stopMovement();
   });
 
   buttonExpand.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.remove('note__collapsed');
-    stopMovement();
+  });
+
+  noteWindow.addEventListener(events[deviceType].click, (evt) => {
+    evt.preventDefault();
+    const newzIndex = initialzIndex + 2;
+    noteWindow.style.zIndex = `${newzIndex}`;
+    initialzIndex = newzIndex;
   });
 
   noteHeader.addEventListener(events[deviceType].down, (evt) => {
@@ -77,27 +81,27 @@ noteList.forEach((item) => {
     initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
     initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
     moveElement = true;
-    noteWindow.addEventListener(events[deviceType].move, onMoveEvent);
-    const newzIndex = initialzIndex + 2;
-    noteWindow.style.zIndex = `${newzIndex}`;
-    initialzIndex = newzIndex;
+    document.addEventListener(events[deviceType].move, onMoveEvent);
   });
 
   function stopMovement() {
     moveElement = false;
-    noteWindow.removeEventListener(events[deviceType].move, onMoveEvent);
+    document.removeEventListener(events[deviceType].move, onMoveEvent);
+    document.removeEventListener('mouseleave', stopMovement);
   }
 
   function onMoveEvent(evt) {
     evt.preventDefault();
-    const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
-    const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
-    noteWindow.style.left = `${noteWindow.offsetLeft - (initialX - newX)}px`;
-    noteWindow.style.top = `${noteWindow.offsetTop - (initialY - newY)}px`;
-    initialX = newX;
-    initialY = newY;
-    noteWindow.addEventListener('mouseleave', stopMovement);
-    noteWindow.addEventListener(events[deviceType].up, stopMovement);
+    if (moveElement) {
+      const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
+      const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
+      noteWindow.style.left = `${noteWindow.offsetLeft - (initialX - newX)}px`;
+      noteWindow.style.top = `${noteWindow.offsetTop - (initialY - newY)}px`;
+      initialX = newX;
+      initialY = newY;
+    }
+    document.addEventListener('mouseleave', stopMovement);
+    document.addEventListener(events[deviceType].up, stopMovement);
   }
 });
 
