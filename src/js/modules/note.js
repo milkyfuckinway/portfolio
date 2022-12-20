@@ -51,30 +51,30 @@ noteList.forEach((item) => {
     noteWindow.style.top = '50%';
     noteWindow.style.transform = 'translate(-50%, -50%)';
     stopMovement();
-    noteFile.removeEventListener(events[deviceType].up, openWindow);
+    noteFile.removeEventListener(events[deviceType].click, openWindow);
   };
 
   noteFile.addEventListener(events[deviceType].click, openWindow);
 
-  buttonCollapse.addEventListener(events[deviceType].up, () => {
+  buttonCollapse.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.add('note__window--collapsed');
     const newReference = document.createElement('div');
     newReference.classList.add('note__reference');
     newReference.textContent = item.children[0].textContent;
     noteFooter.appendChild(newReference);
-    newReference.addEventListener(events[deviceType].up, () => {
+    newReference.addEventListener(events[deviceType].click, () => {
       newReference.remove();
       noteWindow.classList.remove('note__window--collapsed');
     });
   });
 
-  buttonClose.addEventListener(events[deviceType].up, () => {
+  buttonClose.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.add('note__window--collapsed');
     noteFile.classList.remove('note__file--active');
-    noteFile.addEventListener(events[deviceType].up, openWindow);
+    noteFile.addEventListener(events[deviceType].click, openWindow);
   });
 
-  buttonExpand.addEventListener(events[deviceType].up, () => {
+  buttonExpand.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.remove('note__window--collapsed');
     if (noteWindow.classList.contains('note__window--fullscreen')) {
       noteWindow.classList.remove('note__window--fullscreen');
