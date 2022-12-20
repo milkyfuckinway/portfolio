@@ -1,0 +1,37 @@
+.file__label {
+  cursor: pointer;
+  display: grid;
+  gap: 5px;
+  grid-template-rows: 40px 30px;
+
+  &:hover {
+    outline: 1px dotted #000000;
+  }
+}
+
+.file__label--active {
+  background-color: #ececec;
+  box-shadow: -2px 2px 0 rgba($color: #000000, $alpha: 50%);
+}
+
+.file__icon {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+
+  & svg {
+    height: auto;
+    width: 100%;
+  }
+}
+
+.file__name {
+  font-size: 12px;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 100%;
+}

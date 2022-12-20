@@ -1,25 +1,3 @@
-const noteList = document.querySelectorAll('.note');
-const noteFooter = document.querySelector('.note__footer');
-
-let initialX = 0;
-let initialY = 0;
-let initialzIndex = 0;
-let moveElement = false;
-
-const events = {
-  mouse: {
-    down: 'mousedown',
-    move: 'mousemove',
-    up: 'mouseup',
-    click: 'click',
-  },
-  touch: {
-    down: 'touchstart',
-    move: 'touchmove',
-    up: 'touchend',
-    click: 'click',
-  },
-};
 
 let deviceType = '';
 
@@ -36,47 +14,67 @@ const isTouchDevice = () => {
 
 isTouchDevice();
 
-noteList.forEach((item) => {
+const events = {
+  mouse: {
+    down: 'mousedown',
+    move: 'mousemove',
+    up: 'mouseup',
+    click: 'click',
+  },
+  touch: {
+    down: 'touchstart',
+    move: 'touchmove',
+    up: 'touchend',
+    click: 'click',
+  },
+};
+
+let initialX = 0;
+let initialY = 0;
+let initialzIndex = 0;
+let moveElement = false;
+
+const fileList = document.querySelectorAll('.file');
+const noteFooter = document.querySelector('.note__footer');
+
+fileList.forEach((item) => {
   const buttonCollapse = item.querySelector('.note__collapse');
   const buttonExpand = item.querySelector('.note__expand');
   const buttonClose = item.querySelector('.note__close');
   const noteWindow = item.querySelector('.note__window');
   const noteDraggableArea = item.querySelector('.note__draggable-area');
-  const noteFile = item.querySelector('.note__file');
+  const fileLabel = item.querySelector('.file__label');
   const referenceTemplate = document.querySelector('.note__reference');
   const cloneReference = referenceTemplate.cloneNode(true);
 
-  const onCollapse = () => {
-    if (noteWindow.classList.contains('note__window--collapsed')) {
-      noteWindow.classList.remove('note__window--collapsed');
-    } else {
-      noteWindow.classList.add('note__window--collapsed');
-    }
-  };
+  const onCollapse = () =>
+    noteWindow.classList.contains('note__window--collapsed')
+      ? noteWindow.classList.remove('note__window--collapsed')
+      : noteWindow.classList.add('note__window--collapsed');
 
-  const openWindow = () => {
+  const onFileOpen = () => {
     noteWindow.classList.remove('note__window--collapsed');
-    noteFile.classList.add('note__file--active');
+    fileLabel.classList.add('file__label--active');
     noteWindow.style.left = '50%';
     noteWindow.style.top = '50%';
     noteWindow.style.transform = 'translate(-50%, -50%)';
     stopMovement();
     cloneReference.querySelector('.note__refrence-text').textContent =
-      item.querySelector('.note__file-name').textContent;
+      item.querySelector('.file__name').textContent;
     cloneReference.addEventListener('click', onCollapse);
     noteFooter.appendChild(cloneReference);
-    noteFile.removeEventListener(events[deviceType].click, openWindow);
+    fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
   };
 
-  noteFile.addEventListener(events[deviceType].click, openWindow);
+  fileLabel.addEventListener(events[deviceType].click, onFileOpen);
 
   buttonCollapse.addEventListener(events[deviceType].click, onCollapse);
 
   buttonClose.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.add('note__window--collapsed');
-    noteFile.classList.remove('note__file--active');
+    fileLabel.classList.remove('file__label--active');
     cloneReference.remove();
-    noteFile.addEventListener(events[deviceType].click, openWindow);
+    fileLabel.addEventListener(events[deviceType].click, onFileOpen);
   });
 
   buttonExpand.addEventListener(events[deviceType].click, () => {
@@ -103,10 +101,11 @@ noteList.forEach((item) => {
     initialzIndex = newzIndex;
     initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
     initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
+    document.addEventListener(events[deviceType].move, onMoveEvent);
+    document.addEventListener(events[deviceType].up, stopMovement);
     if (!noteWindow.classList.contains('note__window--fullscreen')) {
       moveElement = true;
     }
-    document.addEventListener(events[deviceType].move, onMoveEvent);
   });
 
   function stopMovement() {
@@ -123,7 +122,6 @@ noteList.forEach((item) => {
       initialX = newX;
       initialY = newY;
     }
-    document.addEventListener(events[deviceType].up, stopMovement);
   }
 });
 
