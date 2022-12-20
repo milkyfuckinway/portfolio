@@ -39,14 +39,15 @@ noteList.forEach((item) => {
   const buttonExpand = item.querySelector('.note__expand');
   const buttonClose = item.querySelector('.note__close');
   const noteWindow = item.querySelector('.note__window');
-  const noteHeader = item.querySelector('.note__header');
+  const noteDraggableArea = item.querySelector('.note__draggable-area');
   const noteFile = item.querySelector('.note__file');
 
   const openWindow = () => {
     noteWindow.classList.remove('note__window--collapsed');
     noteFile.classList.add('note__file--active');
-    noteWindow.style.left = '20px';
-    noteWindow.style.top = '20px';
+    noteWindow.style.left = '50%';
+    noteWindow.style.top = '50%';
+    noteWindow.style.transform = 'translate(-50%, -50%)';
     stopMovement();
     noteFile.removeEventListener(events[deviceType].up, openWindow);
   };
@@ -86,7 +87,7 @@ noteList.forEach((item) => {
     initialzIndex = newzIndex;
   });
 
-  noteHeader.addEventListener(events[deviceType].down, (evt) => {
+  noteDraggableArea.addEventListener(events[deviceType].down, (evt) => {
     if (evt.cancelable) {
       evt.preventDefault();
     }
