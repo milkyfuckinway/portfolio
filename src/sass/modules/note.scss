@@ -11,16 +11,22 @@
   display: grid;
   flex-grow: 1;
   gap: 5px;
-  grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(75px, 1fr));
+  grid-template-columns: repeat(auto-fill, 75px);
+  grid-template-rows: repeat(auto-fill, 75px);
   height: calc(300px - 30px);
   margin: 0 auto;
   overflow-x: auto;
   padding: 5px;
+  scrollbar-width: none;
   width: 300px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .note__file {
+  cursor: pointer;
   display: grid;
   gap: 5px;
   grid-template-rows: 40px 30px;
@@ -51,6 +57,7 @@
   font-size: 12px;
   height: 100%;
   overflow: hidden;
+  pointer-events: none;
   text-align: center;
   text-overflow: ellipsis;
   width: 100%;
@@ -193,7 +200,12 @@
   height: 30px;
   overflow: auto;
   position: absolute;
+  scrollbar-width: none;
   width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .note__start {
@@ -205,11 +217,10 @@
   display: flex;
   height: auto;
   padding: 5px;
-  width: max-content;
 
   & svg {
     height: 100%;
-    width: auto;
+    width: 20px;
   }
 }
 
@@ -220,11 +231,11 @@
   border-right: 2px inset rgb(255 255 255 / 50%);
   border-top: 2px inset rgb(255 255 255 / 50%);
   display: flex;
+  flex-shrink: 0;
   gap: 5px;
   height: auto;
-  max-width: 50%;
   padding: 5px;
-  width: max-content;
+  width: 100px;
 }
 
 .note__refrence-icon {
@@ -240,6 +251,5 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 100%;
   word-wrap: break-word;
 }

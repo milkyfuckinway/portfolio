@@ -126,3 +126,8 @@ noteList.forEach((item) => {
     document.addEventListener(events[deviceType].up, stopMovement);
   }
 });
+
+noteFooter.addEventListener('wheel', (evt) => {
+  evt.preventDefault();
+  noteFooter.scrollLeft += evt.deltaY;
+});
