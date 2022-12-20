@@ -1,9 +1,9 @@
 .monitor {
-  height: 300px;
+  height: 100vh;
   margin: 0 auto;
   overflow: hidden;
   position: relative;
-  width: 300px;
+  width: 100vw;
 }
 
 .desktop {
@@ -13,12 +13,12 @@
   gap: 5px;
   grid-template-columns: repeat(auto-fill, 75px);
   grid-template-rows: repeat(auto-fill, 75px);
-  height: calc(300px - 30px);
+  height: calc(100% - 30px);
   margin: 0 auto;
   overflow-x: auto;
   padding: 5px;
   scrollbar-width: none;
-  width: 300px;
+  width: 100%;
 
   &::-webkit-scrollbar {
     display: none;
