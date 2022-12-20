@@ -11,11 +11,13 @@ const events = {
     down: 'mousedown',
     move: 'mousemove',
     up: 'mouseup',
+    click: 'click'
   },
   touch: {
     down: 'touchstart',
     move: 'touchmove',
     up: 'touchend',
+    click: 'click'
   },
 };
 
@@ -52,7 +54,7 @@ noteList.forEach((item) => {
     noteFile.removeEventListener(events[deviceType].up, openWindow);
   };
 
-  noteFile.addEventListener(events[deviceType].up, openWindow);
+  noteFile.addEventListener(events[deviceType].click, openWindow);
 
   buttonCollapse.addEventListener(events[deviceType].up, () => {
     noteWindow.classList.add('note__window--collapsed');
