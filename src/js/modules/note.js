@@ -11,13 +11,13 @@ const events = {
     down: 'mousedown',
     move: 'mousemove',
     up: 'mouseup',
-    click: 'click'
+    click: 'click',
   },
   touch: {
     down: 'touchstart',
     move: 'touchmove',
     up: 'touchend',
-    click: 'click'
+    click: 'click',
   },
 };
 
@@ -43,6 +43,16 @@ noteList.forEach((item) => {
   const noteWindow = item.querySelector('.note__window');
   const noteDraggableArea = item.querySelector('.note__draggable-area');
   const noteFile = item.querySelector('.note__file');
+  const referenceTemplate = document.querySelector('.note__reference');
+  const cloneReference = referenceTemplate.cloneNode(true);
+
+  const onCollapse = () => {
+    if (noteWindow.classList.contains('note__window--collapsed')) {
+      noteWindow.classList.remove('note__window--collapsed');
+    } else {
+      noteWindow.classList.add('note__window--collapsed');
+    }
+  };
 
   const openWindow = () => {
     noteWindow.classList.remove('note__window--collapsed');
@@ -51,26 +61,21 @@ noteList.forEach((item) => {
     noteWindow.style.top = '50%';
     noteWindow.style.transform = 'translate(-50%, -50%)';
     stopMovement();
+    cloneReference.querySelector('.note__refrence-text').textContent =
+      item.querySelector('.note__file-name').textContent;
+    cloneReference.addEventListener('click', onCollapse);
+    noteFooter.appendChild(cloneReference);
     noteFile.removeEventListener(events[deviceType].click, openWindow);
   };
 
   noteFile.addEventListener(events[deviceType].click, openWindow);
 
-  buttonCollapse.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.add('note__window--collapsed');
-    const newReference = document.createElement('div');
-    newReference.classList.add('note__reference');
-    newReference.textContent = item.children[0].textContent;
-    noteFooter.appendChild(newReference);
-    newReference.addEventListener(events[deviceType].click, () => {
-      newReference.remove();
-      noteWindow.classList.remove('note__window--collapsed');
-    });
-  });
+  buttonCollapse.addEventListener(events[deviceType].click, onCollapse);
 
   buttonClose.addEventListener(events[deviceType].click, () => {
     noteWindow.classList.add('note__window--collapsed');
     noteFile.classList.remove('note__file--active');
+    cloneReference.remove();
     noteFile.addEventListener(events[deviceType].click, openWindow);
   });
 
