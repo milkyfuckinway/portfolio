@@ -16,6 +16,11 @@
 
 .file__icon {
   display: flex;
+  height: 100%;
+}
+
+.file__icon--ie {
+  background: url("../img/svg/ie.svg") center/contain no-repeat;
 }
 
 .file__icon svg {

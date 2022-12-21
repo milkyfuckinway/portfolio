@@ -33,14 +33,14 @@ let initialY = 0;
 let initialzIndex = 0;
 let moveElement = false;
 
-const file = document.querySelector('.file');
 const desktopFooter = document.querySelector('.desktop__footer');
 const referenceTemplate = document.querySelector('.reference');
 
-for (let i = 0; i < 100; i++) {
-  const fileClone = file.cloneNode(true);
-  document.querySelector('.desktop__wrapper').appendChild(fileClone);
-}
+// const file = document.querySelector('.file');
+// for (let i = 0; i < 100; i++) {
+//   const fileClone = file.cloneNode(true);
+//   document.querySelector('.desktop__wrapper').appendChild(fileClone);
+// }
 
 let lastFile;
 
