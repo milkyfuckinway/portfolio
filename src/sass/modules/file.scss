@@ -16,14 +16,11 @@
 
 .file__icon {
   display: flex;
-  flex-direction: column;
+}
+
+.file__icon svg {
   height: auto;
   width: 100%;
-
-  & svg {
-    height: auto;
-    width: 100%;
-  }
 }
 
 .file__name {

@@ -31,7 +31,7 @@
   display: flex;
   flex-shrink: 0;
   gap: 5px;
-  height: 30px;
+  height: 36px;
   overflow: auto;
   padding: 2px;
   scrollbar-width: none;
@@ -52,6 +52,7 @@
   display: flex;
   height: auto;
   padding: 2px;
+  width: 36px;
 
   & svg {
     height: 100%;

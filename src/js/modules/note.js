@@ -37,7 +37,7 @@ const file = document.querySelector('.file');
 const desktopFooter = document.querySelector('.desktop__footer');
 const referenceTemplate = document.querySelector('.reference');
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
   const fileClone = file.cloneNode(true);
   document.querySelector('.desktop__wrapper').appendChild(fileClone);
 }
@@ -54,6 +54,7 @@ fileList.forEach((item) => {
   const noteDraggableArea = item.querySelector('.window__draggable-area');
   const fileLabel = item.querySelector('.file__label');
   const reference = referenceTemplate.cloneNode(true);
+  const icon = item.querySelector('.file__icon').cloneNode(true);
   const windowHeader = item.querySelector('.window__header');
 
   const placeOnTop = () => {
@@ -91,18 +92,20 @@ fileList.forEach((item) => {
   };
 
   const onFileOpen = () => {
-    stopMovement();
+    const referenceText = reference.querySelector('.reference__text');
     window.classList.remove('window--collapsed');
     fileLabel.classList.add('file__label--active');
     window.style.left = '50%';
     window.style.top = '50%';
     window.style.transform = 'translate(-50%, -50%)';
-    reference.querySelector('.reference__text').textContent =
+    referenceText.textContent =
       item.querySelector('.file__name').textContent;
     reference.addEventListener('click', onCollapseButton);
     reference.classList.add('reference--active');
+    reference.insertBefore(icon, referenceText);
     desktopFooter.appendChild(reference);
     fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
+    stopMovement();
     setActive();
     placeOnTop();
   };
@@ -112,13 +115,11 @@ fileList.forEach((item) => {
     fileLabel.classList.remove('file__label--active');
     reference.remove();
     fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-    placeOnTop();
   };
 
   const onExpandButton = () => {
     window.classList.remove('window--collapsed');
     window.classList.toggle('window--fullscreen');
-    placeOnTop();
   };
 
   const onWindowClick = () => {
@@ -136,6 +137,12 @@ fileList.forEach((item) => {
       initialY = newY;
     }
   };
+
+  function stopMovement() {
+    moveElement = false;
+    document.removeEventListener(events[deviceType].move, onMoveEvent);
+    document.removeEventListener(events[deviceType].up, stopMovement);
+  }
 
   const onWindowDrag = (evt) => {
     if (evt.cancelable) {
@@ -161,12 +168,6 @@ fileList.forEach((item) => {
   window.addEventListener(events[deviceType].down, onWindowClick);
 
   noteDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
-
-  function stopMovement() {
-    moveElement = false;
-    document.removeEventListener(events[deviceType].move, onMoveEvent);
-    document.removeEventListener(events[deviceType].up, stopMovement);
-  }
 });
 
 desktopFooter.addEventListener('wheel', (evt) => {

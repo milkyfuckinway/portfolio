@@ -4,12 +4,12 @@
   border-left: 2px inset rgb(0 0 0 / 50%);
   border-right: 2px inset rgb(255 255 255 / 50%);
   border-top: 2px inset rgb(255 255 255 / 50%);
-  display: flex;
+  display: grid;
   flex-shrink: 0;
   gap: 5px;
-  height: auto;
-  padding: 5px;
-  width: 100px;
+  grid-template-columns: 20px 80px;
+  height: 32px;
+  padding: 2px;
 }
 
 .reference--active {
@@ -20,15 +20,9 @@
   border-top: 2px inset rgb(0 0 0 / 50%);
 }
 
-.reference__icon {
-  display: flex;
-  flex-shrink: 0;
-  height: 100%;
-  width: auto;
-}
-
 .reference__text {
   align-items: center;
+  display: flex;
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
