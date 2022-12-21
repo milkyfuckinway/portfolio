@@ -37,12 +37,15 @@ const file = document.querySelector('.file');
 const desktopFooter = document.querySelector('.desktop__footer');
 const referenceTemplate = document.querySelector('.reference');
 
-for(let i = 0; i < 1000; i++) {
+for (let i = 0; i < 1000; i++) {
   const fileClone = file.cloneNode(true);
   document.querySelector('.desktop__wrapper').appendChild(fileClone);
 }
 
+let lastFile;
+
 const fileList = document.querySelectorAll('.file');
+
 fileList.forEach((item) => {
   const window = item.querySelector('.window');
   const buttonCollapse = item.querySelector('.window__button--collapse');
@@ -52,20 +55,31 @@ fileList.forEach((item) => {
   const fileLabel = item.querySelector('.file__label');
   const reference = referenceTemplate.cloneNode(true);
 
+  const placeOnTop = () => {
+    const newzIndex = initialzIndex + 1;
+    window.style.zIndex = `${newzIndex}`;
+    initialzIndex = newzIndex;
+    lastFile = reference;
+  };
+
   const setActive = () => {
     const referenceList = document.querySelectorAll('.reference');
     referenceList.forEach((refernce) => {
       refernce.classList.remove('reference--active');
     });
     reference.classList.add('reference--active');
-    const newzIndex = initialzIndex + 1;
-    window.style.zIndex = `${newzIndex}`;
-    initialzIndex = newzIndex;
   };
 
-  const onCollapse = () =>{
-    window.classList.toggle('window--collapsed');
-    console.log('onCollapse');
+  const onCollapseButton = () => {
+    if (reference !== lastFile) {
+      placeOnTop();
+    } else {
+      if (window.classList.contains('window--collapsed')) {
+        window.classList.remove('window--collapsed');
+      } else {
+        window.classList.add('window--collapsed');
+      }
+    }
     setActive();
   };
 
@@ -78,12 +92,12 @@ fileList.forEach((item) => {
     window.style.transform = 'translate(-50%, -50%)';
     reference.querySelector('.reference__text').textContent =
       item.querySelector('.file__name').textContent;
-    reference.addEventListener('click', onCollapse);
+    reference.addEventListener('click', onCollapseButton);
     reference.classList.add('reference--active');
     desktopFooter.appendChild(reference);
     fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
-    console.log('onFileOpen');
     setActive();
+    placeOnTop();
   };
 
   const onCloseButton = () => {
@@ -91,22 +105,21 @@ fileList.forEach((item) => {
     fileLabel.classList.remove('file__label--active');
     reference.remove();
     fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-    console.log('onCloseButton');
+    placeOnTop();
   };
 
   const onExpandButton = () => {
     window.classList.remove('window--collapsed');
     window.classList.toggle('window--fullscreen');
-    console.log('onExpandButton');
+    placeOnTop();
   };
 
   const onWindowClick = () => {
     setActive();
-    console.log('onWindowClick');
+    placeOnTop();
   };
 
   const onMoveEvent = (evt) => {
-    console.log('onMoveEvent');
     if (moveElement) {
       const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
       const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
@@ -114,12 +127,10 @@ fileList.forEach((item) => {
       window.style.top = `${window.offsetTop - (initialY - newY)}px`;
       initialX = newX;
       initialY = newY;
-      console.log('onMoveEvent = true');
     }
   };
 
   const onWindowDrag = (evt) => {
-    console.log('onWindowDrag');
     if (evt.cancelable) {
       evt.preventDefault();
     }
@@ -129,13 +140,12 @@ fileList.forEach((item) => {
       initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
       document.addEventListener(events[deviceType].move, onMoveEvent);
       document.addEventListener(events[deviceType].up, stopMovement);
-      console.log('onWindowDrag = true');
     }
   };
 
   fileLabel.addEventListener(events[deviceType].click, onFileOpen);
 
-  buttonCollapse.addEventListener(events[deviceType].click, onCollapse);
+  buttonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
 
   buttonClose.addEventListener(events[deviceType].click, onCloseButton);
 
@@ -149,12 +159,10 @@ fileList.forEach((item) => {
     moveElement = false;
     document.removeEventListener(events[deviceType].move, onMoveEvent);
     document.removeEventListener(events[deviceType].up, stopMovement);
-    console.log('stopMovement');
   }
 });
 
 desktopFooter.addEventListener('wheel', (evt) => {
   evt.preventDefault();
   desktopFooter.scrollLeft += evt.deltaY;
-  console.log('wheel');
 });
