@@ -12,6 +12,14 @@
   width: 100px;
 }
 
+.reference--active {
+  background-color: #b1aea8;
+  border-bottom: 2px inset rgb(255 255 255 / 50%);
+  border-left: 2px inset rgb(255 255 255 / 50%);
+  border-right: 2px inset rgb(0 0 0 / 50%);
+  border-top: 2px inset rgb(0 0 0 / 50%);
+}
+
 .reference__icon {
   display: flex;
   flex-shrink: 0;

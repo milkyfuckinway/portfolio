@@ -29,6 +29,8 @@
 .desktop__footer {
   background-color: #c4c1bc;
   display: flex;
+  flex-shrink: 0;
+  gap: 5px;
   height: 30px;
   overflow: auto;
   padding: 2px;
