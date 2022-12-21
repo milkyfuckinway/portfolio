@@ -25,3 +25,34 @@
     display: none;
   }
 }
+
+.desktop__footer {
+  background-color: #c4c1bc;
+  display: flex;
+  height: 30px;
+  overflow: auto;
+  padding: 2px;
+  scrollbar-width: none;
+  width: 100%;
+  z-index: 999999999;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.desktop__start {
+  background-color: #c4c1bc;
+  border-bottom: 2px inset rgb(0 0 0 / 50%);
+  border-left: 2px inset rgb(0 0 0 / 50%);
+  border-right: 2px inset rgb(255 255 255 / 50%);
+  border-top: 2px inset rgb(255 255 255 / 50%);
+  display: flex;
+  height: auto;
+  padding: 2px;
+
+  & svg {
+    height: 100%;
+    width: auto;
+  }
+}

@@ -7,15 +7,15 @@ main.main-content
                         svg(width='73' height='87')
                             use(xlink:href="img/sprite-multi.svg#file")
                     .file__name about
-                .note__window.note__window--collapsed
-                    .note__header
-                        .note__draggable-area
-                            .note__address C:\about
-                        .note__buttons 
-                            button.note__button.note__collapse(type='button')
-                            button.note__button.note__expand(type='button')
-                            button.note__button.note__close(type='button')
-                    .note__content
+                .window.window--collapsed
+                    .window__header
+                        .window__draggable-area
+                            .window__path C:\about
+                        .window__buttons 
+                            button.window__button.window__button--collapse(type='button')
+                            button.window__button.window__button--expand(type='button')
+                            button.window__button.window__button--close(type='button')
+                    .window__content
                         h2 start article
                         a text text
                         div text text
@@ -48,7 +48,7 @@ main.main-content
                         a text text
                         div text text
                         h1 end article
-        .note__footer
-            .note__start
+        .desktop__footer
+            .desktop__start
                 svg(width='94' height='77')
                     use(xlink:href="img/sprite-multi.svg#windows-logo")

@@ -1,4 +1,3 @@
-
 let deviceType = '';
 
 const isTouchDevice = () => {
@@ -35,34 +34,30 @@ let initialzIndex = 0;
 let moveElement = false;
 
 const fileList = document.querySelectorAll('.file');
-const noteFooter = document.querySelector('.note__footer');
+const desktopFooter = document.querySelector('.desktop__footer');
+const referenceTemplate = document.querySelector('.reference');
 
 fileList.forEach((item) => {
-  const buttonCollapse = item.querySelector('.note__collapse');
-  const buttonExpand = item.querySelector('.note__expand');
-  const buttonClose = item.querySelector('.note__close');
-  const noteWindow = item.querySelector('.note__window');
-  const noteDraggableArea = item.querySelector('.note__draggable-area');
+  const window = item.querySelector('.window');
+  const buttonCollapse = item.querySelector('.window__button--collapse');
+  const buttonExpand = item.querySelector('.window__button--expand');
+  const buttonClose = item.querySelector('.window__button--close');
+  const noteDraggableArea = item.querySelector('.window__draggable-area');
   const fileLabel = item.querySelector('.file__label');
-  const referenceTemplate = document.querySelector('.note__reference');
-  const cloneReference = referenceTemplate.cloneNode(true);
+  const reference = referenceTemplate.cloneNode(true);
 
-  const onCollapse = () =>
-    noteWindow.classList.contains('note__window--collapsed')
-      ? noteWindow.classList.remove('note__window--collapsed')
-      : noteWindow.classList.add('note__window--collapsed');
-
+  const onCollapse = () => window.classList.toggle('window--collapsed');
   const onFileOpen = () => {
-    noteWindow.classList.remove('note__window--collapsed');
-    fileLabel.classList.add('file__label--active');
-    noteWindow.style.left = '50%';
-    noteWindow.style.top = '50%';
-    noteWindow.style.transform = 'translate(-50%, -50%)';
     stopMovement();
-    cloneReference.querySelector('.note__refrence-text').textContent =
+    window.classList.remove('window--collapsed');
+    fileLabel.classList.add('file__label--active');
+    window.style.left = '50%';
+    window.style.top = '50%';
+    window.style.transform = 'translate(-50%, -50%)';
+    reference.querySelector('.reference__text').textContent =
       item.querySelector('.file__name').textContent;
-    cloneReference.addEventListener('click', onCollapse);
-    noteFooter.appendChild(cloneReference);
+    reference.addEventListener('click', onCollapse);
+    desktopFooter.appendChild(reference);
     fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
   };
 
@@ -71,39 +66,46 @@ fileList.forEach((item) => {
   buttonCollapse.addEventListener(events[deviceType].click, onCollapse);
 
   buttonClose.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.add('note__window--collapsed');
+    window.classList.add('window--collapsed');
     fileLabel.classList.remove('file__label--active');
-    cloneReference.remove();
+    reference.remove();
     fileLabel.addEventListener(events[deviceType].click, onFileOpen);
   });
 
   buttonExpand.addEventListener(events[deviceType].click, () => {
-    noteWindow.classList.remove('note__window--collapsed');
-    if (noteWindow.classList.contains('note__window--fullscreen')) {
-      noteWindow.classList.remove('note__window--fullscreen');
-    } else {
-      noteWindow.classList.add('note__window--fullscreen');
-    }
+    window.classList.remove('window--collapsed');
+    window.classList.toggle('window--fullscreen');
   });
 
-  noteWindow.addEventListener(events[deviceType].down, () => {
+  window.addEventListener(events[deviceType].down, () => {
     const newzIndex = initialzIndex + 2;
-    noteWindow.style.zIndex = `${newzIndex}`;
+    window.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
   });
+
+  const onMoveEvent = (evt) => {
+    if (moveElement) {
+      const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
+      const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
+      window.style.left = `${window.offsetLeft - (initialX - newX)}px`;
+      window.style.top = `${window.offsetTop - (initialY - newY)}px`;
+      initialX = newX;
+      initialY = newY;
+    }
+  };
 
   noteDraggableArea.addEventListener(events[deviceType].down, (evt) => {
     if (evt.cancelable) {
       evt.preventDefault();
     }
     const newzIndex = initialzIndex + 2;
-    noteWindow.style.zIndex = `${newzIndex}`;
+    window.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
     initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
     initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
     document.addEventListener(events[deviceType].move, onMoveEvent);
     document.addEventListener(events[deviceType].up, stopMovement);
-    if (!noteWindow.classList.contains('note__window--fullscreen')) {
+    if (!window.classList.contains('window--fullscreen')) {
       moveElement = true;
     }
   });
@@ -112,20 +114,9 @@ fileList.forEach((item) => {
     moveElement = false;
     document.removeEventListener(events[deviceType].move, onMoveEvent);
   }
-
-  function onMoveEvent(evt) {
-    if (moveElement) {
-      const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
-      const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
-      noteWindow.style.left = `${noteWindow.offsetLeft - (initialX - newX)}px`;
-      noteWindow.style.top = `${noteWindow.offsetTop - (initialY - newY)}px`;
-      initialX = newX;
-      initialY = newY;
-    }
-  }
 });
 
-noteFooter.addEventListener('wheel', (evt) => {
+desktopFooter.addEventListener('wheel', (evt) => {
   evt.preventDefault();
-  noteFooter.scrollLeft += evt.deltaY;
+  desktopFooter.scrollLeft += evt.deltaY;
 });

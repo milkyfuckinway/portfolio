@@ -1,4 +1,4 @@
-.note__window {
+.window {
   background-color: #c4c1bc;
   border-bottom: 2px inset rgb(0 0 0 / 50%);
   border-left: 2px inset rgb(0 0 0 / 50%);
@@ -14,20 +14,11 @@
   width: 100%;
 }
 
-.note__content {
-  background-color: #c4c1bc;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-.note__window--collapsed {
+.window--collapsed {
   display: none;
 }
 
-.note__window--fullscreen {
+.window--fullscreen {
   height: calc(100% - 30px);
   left: 0 !important;
   max-width: 100%;
@@ -36,7 +27,16 @@
   width: 100%;
 }
 
-.note__header {
+.window__content {
+  background-color: #c4c1bc;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.window__header {
   align-items: center;
   background-color: #0e3fbd;
   color: $note-header-items;
@@ -47,7 +47,7 @@
   width: 100%;
 }
 
-.note__draggable-area {
+.window__draggable-area {
   width: 100%;
 }
 
@@ -59,7 +59,7 @@
   text-overflow: ellipsis;
 }
 
-.note__buttons {
+.window__buttons {
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(3, 22px);
@@ -67,7 +67,7 @@
   justify-content: end;
 }
 
-.note__button {
+.window__button {
   background-color: #c4c1bc;
   border-bottom: 1px inset rgb(0 0 0 / 50%);
   border-left: 1px inset rgb(0 0 0 / 50%);
@@ -86,7 +86,7 @@
   }
 }
 
-.note__collapse {
+.window__button--collapse {
   &::after {
     background-color: #000000;
     bottom: 4px;
@@ -97,7 +97,7 @@
   }
 }
 
-.note__expand {
+.window__button--expand {
   &::after {
     background-color: transparent;
     border: 2px solid #000000;
@@ -110,7 +110,7 @@
   }
 }
 
-.note__close {
+.window__button--close {
   &::after,
   &::before {
     background-color: #000000;
@@ -129,65 +129,4 @@
   &::before {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
-}
-
-.note__footer {
-  background-color: #c4c1bc;
-  display: flex;
-  height: 30px;
-  overflow: auto;
-  padding: 2px;
-  scrollbar-width: none;
-  width: 100%;
-  z-index: 999999999;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.note__start {
-  background-color: #c4c1bc;
-  border-bottom: 2px inset rgb(0 0 0 / 50%);
-  border-left: 2px inset rgb(0 0 0 / 50%);
-  border-right: 2px inset rgb(255 255 255 / 50%);
-  border-top: 2px inset rgb(255 255 255 / 50%);
-  display: flex;
-  height: auto;
-  padding: 2px;
-
-  & svg {
-    height: 100%;
-    width: auto;
-  }
-}
-
-.note__reference {
-  background-color: #c4c1bc;
-  border-bottom: 2px inset rgb(0 0 0 / 50%);
-  border-left: 2px inset rgb(0 0 0 / 50%);
-  border-right: 2px inset rgb(255 255 255 / 50%);
-  border-top: 2px inset rgb(255 255 255 / 50%);
-  display: flex;
-  flex-shrink: 0;
-  gap: 5px;
-  height: auto;
-  padding: 5px;
-  width: 100px;
-}
-
-.note__refrence-icon {
-  display: flex;
-  flex-shrink: 0;
-  height: 100%;
-  width: auto;
-}
-
-.note__refrence-text {
-  align-items: center;
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-wrap: break-word;
 }
