@@ -71,16 +71,17 @@ fileList.forEach((item) => {
   };
 
   const onCollapseButton = () => {
-    if (reference !== lastFile) {
+    setActive();
+    if (window.classList.contains('window--collapsed')) {
+      window.classList.remove('window--collapsed');
       placeOnTop();
     } else {
-      if (window.classList.contains('window--collapsed')) {
-        window.classList.remove('window--collapsed');
+      if (reference !== lastFile) {
+        placeOnTop();
       } else {
         window.classList.add('window--collapsed');
       }
     }
-    setActive();
   };
 
   const onFileOpen = () => {
