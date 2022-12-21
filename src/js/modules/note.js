@@ -54,12 +54,18 @@ fileList.forEach((item) => {
   const noteDraggableArea = item.querySelector('.window__draggable-area');
   const fileLabel = item.querySelector('.file__label');
   const reference = referenceTemplate.cloneNode(true);
+  const windowHeader = item.querySelector('.window__header');
 
   const placeOnTop = () => {
     const newzIndex = initialzIndex + 1;
     window.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
     lastFile = reference;
+    const windowHeaderList = document.querySelectorAll('.window__header');
+    windowHeaderList.forEach((thing) => {
+      thing.classList.remove('window__header--active');
+    });
+    windowHeader.classList.add('window__header--active');
   };
 
   const setActive = () => {

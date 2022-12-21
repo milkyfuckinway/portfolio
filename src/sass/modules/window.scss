@@ -29,13 +29,17 @@
 
 .window__header {
   align-items: center;
-  background-color: #0e3fbd;
+  background-color: #556fb1;
   color: $note-header-items;
   display: flex;
   justify-content: space-between;
   min-height: 30px;
   padding: 0 10px;
   width: 100%;
+}
+
+.window__header--active {
+  background-color: #0e3fbd;
 }
 
 .window__draggable-area {
