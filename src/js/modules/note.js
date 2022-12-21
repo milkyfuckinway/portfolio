@@ -57,6 +57,11 @@ fileList.forEach((item) => {
   const windowHeader = item.querySelector('.window__header');
   const windowPath = item.querySelector('.window__path');
   const fileName = item.querySelector('.file__name');
+  const referenceText = reference.querySelector('.reference__text');
+  const referenceIcon = item.querySelector('.file__icon').cloneNode(true);
+  reference.insertBefore(referenceIcon, referenceText);
+  const pathIcon = item.querySelector('.file__icon').cloneNode(true);
+  windowDraggableArea.insertBefore(pathIcon, windowPath);
 
   const placeOnTop = () => {
     const newzIndex = initialzIndex + 1;
@@ -93,7 +98,6 @@ fileList.forEach((item) => {
   };
 
   const onFileOpen = () => {
-    const referenceText = reference.querySelector('.reference__text');
     window.classList.remove('window--collapsed');
     fileLabel.classList.add('file__label--active');
     window.style.left = '50%';
@@ -102,10 +106,6 @@ fileList.forEach((item) => {
     referenceText.textContent = fileName.textContent;
     reference.addEventListener('click', onCollapseButton);
     reference.classList.add('reference--active');
-    const referenceIcon = item.querySelector('.file__icon').cloneNode(true);
-    reference.insertBefore(referenceIcon, referenceText);
-    const pathIcon = item.querySelector('.file__icon').cloneNode(true);
-    windowDraggableArea.insertBefore(pathIcon, windowPath);
     desktopFooter.appendChild(reference);
     fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
     stopMovement();
