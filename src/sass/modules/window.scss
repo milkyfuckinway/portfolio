@@ -19,7 +19,7 @@
 }
 
 .window--fullscreen {
-  height: calc(100% - 30px);
+  height: calc(100% - 36px);
   left: 0 !important;
   max-width: 100%;
   top: 0 !important;
@@ -43,6 +43,11 @@
 }
 
 .window__draggable-area {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 18px 1fr;
+  height: 100%;
   width: 100%;
 }
 

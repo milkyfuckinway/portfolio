@@ -51,11 +51,12 @@ fileList.forEach((item) => {
   const buttonCollapse = item.querySelector('.window__button--collapse');
   const buttonExpand = item.querySelector('.window__button--expand');
   const buttonClose = item.querySelector('.window__button--close');
-  const noteDraggableArea = item.querySelector('.window__draggable-area');
+  const windowDraggableArea = item.querySelector('.window__draggable-area');
   const fileLabel = item.querySelector('.file__label');
   const reference = referenceTemplate.cloneNode(true);
-  const icon = item.querySelector('.file__icon').cloneNode(true);
   const windowHeader = item.querySelector('.window__header');
+  const windowPath = item.querySelector('.window__path');
+  const fileName = item.querySelector('.file__name');
 
   const placeOnTop = () => {
     const newzIndex = initialzIndex + 1;
@@ -98,11 +99,13 @@ fileList.forEach((item) => {
     window.style.left = '50%';
     window.style.top = '50%';
     window.style.transform = 'translate(-50%, -50%)';
-    referenceText.textContent =
-      item.querySelector('.file__name').textContent;
+    referenceText.textContent = fileName.textContent;
     reference.addEventListener('click', onCollapseButton);
     reference.classList.add('reference--active');
-    reference.insertBefore(icon, referenceText);
+    const referenceIcon = item.querySelector('.file__icon').cloneNode(true);
+    reference.insertBefore(referenceIcon, referenceText);
+    const pathIcon = item.querySelector('.file__icon').cloneNode(true);
+    windowDraggableArea.insertBefore(pathIcon, windowPath);
     desktopFooter.appendChild(reference);
     fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
     stopMovement();
@@ -167,7 +170,7 @@ fileList.forEach((item) => {
 
   window.addEventListener(events[deviceType].down, onWindowClick);
 
-  noteDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+  windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
 });
 
 desktopFooter.addEventListener('wheel', (evt) => {
