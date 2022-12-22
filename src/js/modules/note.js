@@ -61,7 +61,9 @@ fileList.forEach((item) => {
   const referenceIcon = item.querySelector('.file__icon').cloneNode(true);
   reference.insertBefore(referenceIcon, referenceText);
   const pathIcon = item.querySelector('.file__icon').cloneNode(true);
-  windowDraggableArea.insertBefore(pathIcon, windowPath);
+  if (windowPath) {
+    windowDraggableArea.insertBefore(pathIcon, windowPath);
+  }
 
   const placeOnTop = () => {
     const newzIndex = initialzIndex + 1;
@@ -98,19 +100,21 @@ fileList.forEach((item) => {
   };
 
   const onFileOpen = () => {
-    window.classList.remove('window--collapsed');
-    fileLabel.classList.add('file__label--active');
-    window.style.left = '50%';
-    window.style.top = '50%';
-    window.style.transform = 'translate(-50%, -50%)';
-    referenceText.textContent = fileName.textContent;
-    reference.addEventListener('click', onCollapseButton);
-    reference.classList.add('reference--active');
-    desktopFooter.appendChild(reference);
-    fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
-    stopMovement();
-    setActive();
-    placeOnTop();
+    if (item.classList.contains('file--text')) {
+      window.classList.remove('window--collapsed');
+      fileLabel.classList.add('file__label--active');
+      window.style.left = '50%';
+      window.style.top = '50%';
+      window.style.transform = 'translate(-50%, -50%)';
+      referenceText.textContent = fileName.textContent;
+      reference.addEventListener('click', onCollapseButton);
+      reference.classList.add('reference--active');
+      desktopFooter.appendChild(reference);
+      fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
+      stopMovement();
+      setActive();
+      placeOnTop();
+    }
   };
 
   const onCloseButton = () => {
@@ -160,17 +164,24 @@ fileList.forEach((item) => {
     }
   };
 
-  fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-
-  buttonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
-
-  buttonClose.addEventListener(events[deviceType].click, onCloseButton);
-
-  buttonExpand.addEventListener(events[deviceType].click, onExpandButton);
-
-  window.addEventListener(events[deviceType].down, onWindowClick);
-
-  windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+  if (fileLabel) {
+    fileLabel.addEventListener(events[deviceType].click, onFileOpen);
+  }
+  if (buttonCollapse) {
+    buttonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
+  }
+  if (buttonClose) {
+    buttonClose.addEventListener(events[deviceType].click, onCloseButton);
+  }
+  if (buttonExpand) {
+    buttonExpand.addEventListener(events[deviceType].click, onExpandButton);
+  }
+  if (window) {
+    window.addEventListener(events[deviceType].down, onWindowClick);
+  }
+  if (windowDraggableArea) {
+    windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+  }
 });
 
 desktopFooter.addEventListener('wheel', (evt) => {
