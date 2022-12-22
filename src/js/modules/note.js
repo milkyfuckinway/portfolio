@@ -32,6 +32,8 @@ let initialX = 0;
 let initialY = 0;
 let initialzIndex = 0;
 let moveElement = false;
+let initialWindowCounterVertical = 0;
+let initialWindowCounterHorisontal = 0;
 
 const template = document.querySelector('.template');
 const referenceTemplate = template.querySelector('.reference');
@@ -104,42 +106,24 @@ fileList.forEach((item) => {
   };
 
   function onFileOpen() {
-    if (item.classList.contains('file--text')) {
+    if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
       const fileContent = item.querySelector('.file__content');
       if (fileContent) {
         window.appendChild(fileContent);
         fileContent.classList.remove('visually-hidden');
         fileContent.classList.add('window__content');
+        fileContent.classList.remove('file__content');
+        if (item.classList.contains('file--folder')) {
+          fileContent.classList.add('window--folder');
+        }
       }
       destkop.appendChild(window);
       window.classList.remove('window--collapsed');
       fileLabel.classList.add('file__label--active');
-      window.style.left = '50%';
-      window.style.top = '50%';
-      window.style.transform = 'translate(-50%, -50%)';
-      windowPath.textContent = `C:/${fileName.textContent}`;
-      referenceText.textContent = fileName.textContent;
-      reference.addEventListener('click', onCollapseButton);
-      reference.classList.add('reference--active');
-      desktopFooter.appendChild(reference);
-      fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
-      stopMovement();
-      setActive();
-      placeOnTop();
-    }
-    if (item.classList.contains('file--folder')) {
-      const fileContent = item.querySelector('.file__content');
-      if (fileContent) {
-        window.appendChild(fileContent);
-        fileContent.classList.remove('visually-hidden');
-        fileContent.classList.add('window__content');
-        fileContent.classList.add('window--folder');
-      }
-      destkop.appendChild(window);
-      window.classList.remove('window--collapsed');
-      fileLabel.classList.add('file__label--active');
-      window.style.left = '50%';
-      window.style.top = '50%';
+      window.style.left = `${destkop.offsetWidth / 2 + initialWindowCounterHorisontal}px`;
+      window.style.top = `${destkop.offsetHeight / 2 + initialWindowCounterVertical}px`;
+      initialWindowCounterVertical += 30;
+      initialWindowCounterHorisontal += 10;
       window.style.transform = 'translate(-50%, -50%)';
       windowPath.textContent = `C:/${fileName.textContent}`;
       referenceText.textContent = fileName.textContent;
@@ -159,6 +143,8 @@ fileList.forEach((item) => {
     reference.remove();
     window.remove();
     fileLabel.addEventListener(events[deviceType].click, onFileOpen);
+    initialWindowCounterVertical -= 30;
+    initialWindowCounterHorisontal -= 10;
   };
 
   const onExpandButton = () => {

@@ -29,7 +29,7 @@
 
 .window__header {
   align-items: center;
-  background-color: hsl(223deg 20% 40%);
+  background-color: #828282;
   color: $note-header-items;
   display: flex;
   justify-content: space-between;
@@ -132,7 +132,8 @@
 }
 
 .window__content {
-  background-color: #c4c1bc;
+  background-color: #ffffff;
+  border: 10px solid #c4c1bc;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -141,6 +142,8 @@
 }
 
 .window--folder {
+  background-color: #ffffff;
+  border: 10px solid #c4c1bc;
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(auto-fill, 75px);
