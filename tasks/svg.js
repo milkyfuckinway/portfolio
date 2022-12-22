@@ -12,10 +12,7 @@ export default () => {
     .pipe(size({ title: 'Размер до оптимизации' }))
     .pipe(
       svgo({
-        plugins: [
-          { removeViewBox: false },
-          { removeDimensions: true },
-        ]
+        plugins: [{ removeViewBox: false }, { removeDimensions: true }],
       })
     )
     .pipe(size({ title: 'Размер после оптимизации' }))

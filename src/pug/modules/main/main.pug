@@ -6,18 +6,28 @@ main.main-content
                     .file__icon
                         svg(width='73' height='87')
                             use(xlink:href="img/sprite-multi.svg#file")
-                    .file__name about
-                .window.window--collapsed
-                    .window__header
-                        .window__draggable-area
-                            .window__path C:\about
-                        .window__buttons 
-                            button.window__button.window__button--collapse(type='button')
-                            button.window__button.window__button--expand(type='button')
-                            button.window__button.window__button--close(type='button')
-                    .window__content
-                        h2 hello, my name is Jenya
-                        p and i am a beginning front-end developer
+                    .file__name first file
+                    .file__content.visually-hidden
+                        h2 yes its the start of the story
+                        p lets look
+            .file.file--text
+                .file__label
+                    .file__icon
+                        svg(width='73' height='87')
+                            use(xlink:href="img/sprite-multi.svg#file")
+                    .file__name second file
+                    .file__content.visually-hidden
+                        h2 second file
+                        p and here is the second file
+            .file.file--text
+                .file__label
+                    .file__icon
+                        svg(width='73' height='87')
+                            use(xlink:href="img/sprite-multi.svg#file")
+                    .file__name third file
+                    .file__content.visually-hidden
+                        h2 third file is going to show up
+                        p lets look into it
             .file.file--link
                 a(href='https://milkyfuckinway.github.io/cat-energy/')
                     .file__label

@@ -30,7 +30,7 @@ export default (done) => {
             pngOptions: {
               compressionLevel: 9,
               adaptiveFiltering: true,
-              palette: true
+              palette: true,
             },
             rename: { suffix: '_mobile' },
           },
@@ -46,7 +46,7 @@ export default (done) => {
             pngOptions: {
               compressionLevel: 9,
               adaptiveFiltering: true,
-              palette: true
+              palette: true,
             },
             rename: { suffix: '_mobile@2x' },
           },
@@ -62,7 +62,7 @@ export default (done) => {
             pngOptions: {
               compressionLevel: 9,
               adaptiveFiltering: true,
-              palette: true
+              palette: true,
             },
             rename: { suffix: '_tablet' },
           },
@@ -78,7 +78,7 @@ export default (done) => {
             pngOptions: {
               compressionLevel: 9,
               adaptiveFiltering: true,
-              palette: true
+              palette: true,
             },
             rename: { suffix: '_tablet@2x' },
           },
@@ -94,7 +94,7 @@ export default (done) => {
             pngOptions: {
               compressionLevel: 9,
               adaptiveFiltering: true,
-              palette: true
+              palette: true,
             },
             rename: { suffix: '_desktop' },
           },
@@ -110,7 +110,7 @@ export default (done) => {
             pngOptions: {
               compressionLevel: 9,
               adaptiveFiltering: true,
-              palette: true
+              palette: true,
             },
             rename: { suffix: '_desktop@2x' },
           },
@@ -128,9 +128,7 @@ export default (done) => {
     .on('end', () => {
       gulp
         .src(contentManualSrc)
-        .pipe(
-          size({ title: 'Создание из заготовленных изображений файлы webp' })
-        )
+        .pipe(size({ title: 'Создание из заготовленных изображений файлы webp' }))
         .pipe(newer(contentManualSrc))
         .pipe(
           sharp({
@@ -160,7 +158,7 @@ export default (done) => {
                     pngOptions: {
                       compressionLevel: 9,
                       adaptiveFiltering: true,
-                      palette: true
+                      palette: true,
                     },
                   },
                   {

@@ -69,18 +69,14 @@ export default (done) => {
       fs.readdir('./src/img/sprite/mono', (err, items) => {
         if (items) {
           items.forEach((item) => {
-            fs.appendFile(path.htmlsprite.appendto,
-              `|Спрайт для ${item.split('.')[0]}\nsvg(width='#' height='#')\n    use(xlink:href="img/sprite-mono.svg#${item.split('.')[0]}")\n\r`
-            );
+            fs.appendFile(path.htmlsprite.appendto, `|Спрайт для ${item.split('.')[0]}\nsvg(width='#' height='#')\n    use(xlink:href="img/sprite-mono.svg#${item.split('.')[0]}")\n\r`);
           });
         }
       });
       fs.readdir('./src/img/sprite/multi', (err, items) => {
         if (items) {
           items.forEach((item) => {
-            fs.appendFile(path.htmlsprite.appendto,
-              `|Спрайт для ${item.split('.')[0]}\nsvg(width='#' height='#')\n    use(xlink:href="img/sprite-multi.svg#${item.split('.')[0]}")\n\r`
-            );
+            fs.appendFile(path.htmlsprite.appendto, `|Спрайт для ${item.split('.')[0]}\nsvg(width='#' height='#')\n    use(xlink:href="img/sprite-multi.svg#${item.split('.')[0]}")\n\r`);
           });
         }
       });

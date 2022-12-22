@@ -45,10 +45,7 @@ export default (done) => {
               extrablack: '950',
             };
             if (fontExt === 'woff' || fontExt === 'woff2') {
-              fs.appendFile(
-                path.fonts.appendto,
-                `@include font-face("${fontName}", "${item}", "${fontStyle}", "${styleToWeight[fontStyle]}", "${fontExt}");\n`
-              );
+              fs.appendFile(path.fonts.appendto, `@include font-face("${fontName}", "${item}", "${fontStyle}", "${styleToWeight[fontStyle]}", "${fontExt}");\n`);
             }
           });
         }

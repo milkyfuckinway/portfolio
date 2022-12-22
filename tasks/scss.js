@@ -16,17 +16,18 @@ const sass = gulpSass(scss);
 
 export default () => {
   console.log('Генерация css из файлов scss');
-  return gulp.src(path.sass.src, {sourcemaps: app.isDev})
+  return gulp
+    .src(path.sass.src, { sourcemaps: app.isDev })
     .pipe(sassGlob())
     .pipe(sass())
     .pipe(webpCss())
     .pipe(autoprefixer())
     .pipe(shorthand())
     .pipe(groupMedias())
-    .pipe(size({title : 'Размер до оптимизации'}))
-    .pipe(gulp.dest(path.sass.dest, {sourcemaps: app.isDev}))
-    .pipe(rename({suffix: '.min'}))
+    .pipe(size({ title: 'Размер до оптимизации' }))
+    .pipe(gulp.dest(path.sass.dest, { sourcemaps: app.isDev }))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(csso())
-    .pipe(size({title : 'Размер после оптимизации'}))
-    .pipe(gulp.dest(path.sass.dest, {sourcemaps: app.isDev}));
+    .pipe(size({ title: 'Размер после оптимизации' }))
+    .pipe(gulp.dest(path.sass.dest, { sourcemaps: app.isDev }));
 };
