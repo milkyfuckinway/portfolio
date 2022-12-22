@@ -41,10 +41,10 @@ const desktopFooter = destkop.querySelector('.desktop__footer');
 
 // const file = document.querySelector('.file');
 // for (let i = 0; i < 100; i++) {
-//   const fileClone = file.cloneNode(true);
-//   document.querySelector('.desktop__wrapper').appendChild(fileClone);
+// const fileClone = file.cloneNode(true);
+// document.querySelector('.desktop__wrapper').appendChild(fileClone);
 // }
-
+//
 let lastFile;
 
 const fileList = document.querySelectorAll('.file');
@@ -75,7 +75,6 @@ fileList.forEach((item) => {
     initialzIndex = newzIndex;
     lastFile = reference;
     const windowHeaderList = destkop.querySelectorAll('.window__header');
-    console.log(windowHeaderList);
     windowHeaderList.forEach((thing) => {
       thing.classList.remove('window__header--active');
     });
@@ -111,6 +110,30 @@ fileList.forEach((item) => {
         window.appendChild(fileContent);
         fileContent.classList.remove('visually-hidden');
         fileContent.classList.add('window__content');
+      }
+      destkop.appendChild(window);
+      window.classList.remove('window--collapsed');
+      fileLabel.classList.add('file__label--active');
+      window.style.left = '50%';
+      window.style.top = '50%';
+      window.style.transform = 'translate(-50%, -50%)';
+      windowPath.textContent = `C:/${fileName.textContent}`;
+      referenceText.textContent = fileName.textContent;
+      reference.addEventListener('click', onCollapseButton);
+      reference.classList.add('reference--active');
+      desktopFooter.appendChild(reference);
+      fileLabel.removeEventListener(events[deviceType].click, onFileOpen);
+      stopMovement();
+      setActive();
+      placeOnTop();
+    }
+    if (item.classList.contains('file--folder')) {
+      const fileContent = item.querySelector('.file__content');
+      if (fileContent) {
+        window.appendChild(fileContent);
+        fileContent.classList.remove('visually-hidden');
+        fileContent.classList.add('window__content');
+        fileContent.classList.add('window--folder');
       }
       destkop.appendChild(window);
       window.classList.remove('window--collapsed');
