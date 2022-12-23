@@ -34,19 +34,22 @@ let initialzIndex = 0;
 let moveElement = false;
 let initialWindowCounterVertical = 0;
 let initialWindowCounterHorisontal = 0;
+let offsetVerticalCounter = 0;
+let offsetHorisontalCounter = 0;
 
 const template = document.querySelector('.template');
 const referenceTemplate = template.querySelector('.reference');
 const windowTemplate = template.querySelector('.window');
-const destkop = document.querySelector('.desktop');
-const desktopFooter = destkop.querySelector('.desktop__footer');
+const desktop = document.querySelector('.desktop');
+const desktopFooter = desktop.querySelector('.desktop__footer');
+const desktopWrapper = desktop.querySelector('.desktop__wrapper');
 
-// const file = document.querySelector('.file');
-// for (let i = 0; i < 100; i++) {
-// const fileClone = file.cloneNode(true);
-// document.querySelector('.desktop__wrapper').appendChild(fileClone);
-// }
-//
+const file = document.querySelector('.file');
+for (let i = 0; i < 100; i++) {
+  const fileClone = file.cloneNode(true);
+  document.querySelector('.desktop__wrapper').appendChild(fileClone);
+}
+
 let lastFile;
 
 const fileList = document.querySelectorAll('.file');
@@ -76,7 +79,7 @@ fileList.forEach((item) => {
     window.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
     lastFile = reference;
-    const windowHeaderList = destkop.querySelectorAll('.window__header');
+    const windowHeaderList = desktop.querySelectorAll('.window__header');
     windowHeaderList.forEach((thing) => {
       thing.classList.remove('window__header--active');
     });
@@ -117,13 +120,27 @@ fileList.forEach((item) => {
           fileContent.classList.add('window--folder');
         }
       }
-      destkop.appendChild(window);
+      desktop.appendChild(window);
       window.classList.remove('window--collapsed');
       fileLabel.classList.add('file__label--active');
-      window.style.left = `${destkop.offsetWidth / 2 + initialWindowCounterHorisontal}px`;
-      window.style.top = `${destkop.offsetHeight / 2 + initialWindowCounterVertical}px`;
-      initialWindowCounterVertical += 30;
-      initialWindowCounterHorisontal += 10;
+      window.style.left = `${desktop.offsetWidth / 2 + initialWindowCounterHorisontal}px`;
+      window.style.top = `${desktop.offsetHeight / 2 + initialWindowCounterVertical}px`;
+      if (initialWindowCounterHorisontal + (desktopWrapper.offsetWidth - window.offsetWidth) / 2 + 10 + window.offsetWidth >= desktopWrapper.offsetWidth) {
+        initialWindowCounterHorisontal = 0;
+        offsetHorisontalCounter = 0;
+        console.log(true, offsetHorisontalCounter);
+      } else {
+        initialWindowCounterHorisontal += 10;
+        offsetHorisontalCounter += 1;
+      }
+      if (initialWindowCounterVertical + (desktopWrapper.offsetHeight - window.offsetHeight) / 2 + 30 + window.offsetHeight >= desktopWrapper.offsetHeight) {
+        initialWindowCounterVertical = 0;
+        offsetVerticalCounter = 0;
+        console.log(true, offsetVerticalCounter);
+      } else {
+        initialWindowCounterVertical += 30;
+        offsetVerticalCounter += 1;
+      }
       window.style.transform = 'translate(-50%, -50%)';
       windowPath.textContent = `C:/${fileName.textContent}`;
       referenceText.textContent = fileName.textContent;
@@ -143,8 +160,15 @@ fileList.forEach((item) => {
     reference.remove();
     window.remove();
     fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-    initialWindowCounterVertical -= 30;
-    initialWindowCounterHorisontal -= 10;
+    console.log(offsetVerticalCounter, offsetHorisontalCounter);
+    if (offsetVerticalCounter > 0) {
+      offsetVerticalCounter -= 1;
+      initialWindowCounterVertical -= 30;
+    }
+    if (offsetHorisontalCounter > 0) {
+      offsetHorisontalCounter -= 1;
+      initialWindowCounterHorisontal -= 10;
+    }
   };
 
   const onExpandButton = () => {
