@@ -84,6 +84,22 @@
     content: "";
     position: absolute;
   }
+
+  &:hover,
+  &:active {
+    border-bottom: 1px inset rgb(255 255 255 / 50%);
+    border-left: 1px inset rgb(255 255 255 / 50%);
+    border-right: 1px inset rgb(0 0 0 / 50%);
+    border-top: 1px inset rgb(0 0 0 / 50%);
+  }
+
+  &:hover {
+    background-color: #c4c1bc;
+  }
+
+  &:active {
+    background-color: hsl(37deg 6% 60%);
+  }
 }
 
 .window__button--collapse {

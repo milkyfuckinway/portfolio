@@ -160,7 +160,6 @@ fileList.forEach((item) => {
     reference.remove();
     window.remove();
     fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-    console.log(offsetVerticalCounter, offsetHorisontalCounter);
     if (offsetVerticalCounter > 0) {
       offsetVerticalCounter -= 1;
       initialWindowCounterVertical -= 30;
