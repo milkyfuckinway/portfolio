@@ -26,7 +26,8 @@ const setStartPosition = (elem) => {
   elem.style.transform = 'translate(-50%, -50%)';
 };
 
-const setCurrentWindowActive = (win) => {
+const setCurrentWindowActive = (win, ref) => {
+  lastFile = ref;
   const newzIndex = initialzIndex + 1;
   win.style.zIndex = `${newzIndex}`;
   initialzIndex = newzIndex;
@@ -38,7 +39,6 @@ const setCurrentWindowActive = (win) => {
 };
 
 const setCurrentReferenceActive = (ref) => {
-  lastFile = ref;
   const allReferences = desktop.querySelectorAll('.reference');
   allReferences.forEach((b) => {
     b.classList.remove('reference--active');
@@ -55,11 +55,11 @@ fileList.forEach((item) => {
     const newWindowPath = newWindow.querySelector('.window__path');
     const windowDraggableArea = newWindow.querySelector('.window__draggable-area');
     const reference = referenceTemplate.cloneNode(true);
-    newWindowPath.textContent = `C:/${fileName.textContent}`;
+    newWindowPath.textContent = fileName.textContent;
     windowDraggableArea.insertBefore(pathIcon, newWindowPath);
     desktop.appendChild(newWindow);
     setStartPosition(newWindow);
-    setCurrentWindowActive(newWindow);
+    setCurrentWindowActive(newWindow, reference);
     setCurrentReferenceActive(reference);
 
     const onMoveEvent = (e) => {
@@ -89,22 +89,22 @@ fileList.forEach((item) => {
 
     windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
     newWindow.addEventListener(events[deviceType].down, () => {
-      setCurrentWindowActive(newWindow);
+      setCurrentWindowActive(newWindow, reference);
       setCurrentReferenceActive(reference);
     });
 
     const onCollapseButton = () => {
-      if (lastFile === reference) {
-        if (newWindow.classList.contains('window--collapsed')) {
-          newWindow.classList.remove('window--collapsed');
-        } else {
-          newWindow.classList.add('window--collapsed');
-        }
+      setCurrentReferenceActive(reference);
+      if (newWindow.classList.contains('window--collapsed')) {
+        newWindow.classList.remove('window--collapsed');
+        setCurrentWindowActive(newWindow, reference);
       } else {
-        setCurrentWindowActive(newWindow);
-        setCurrentReferenceActive(reference);
+        if (reference === lastFile) {
+          newWindow.classList.add('window--collapsed');
+        } else {
+          setCurrentWindowActive(newWindow, reference);
+        }
       }
-      setCurrentWindowActive(newWindow);
     };
 
     const windowButtonCollapse = newWindow.querySelector('.window__button--collapse');
@@ -119,7 +119,15 @@ fileList.forEach((item) => {
     const windowButtonClose = newWindow.querySelector('.window__button--close');
     windowButtonClose.addEventListener(events[deviceType].click, onCloseButton);
 
-    // windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
+    const onExpandButton = () => {
+      if (newWindow.classList.contains('window--fullscreen')) {
+        newWindow.classList.remove('window--fullscreen');
+      } else {
+        newWindow.classList.add('window--fullscreen');
+      }
+    };
+    const windowButtonExpand = newWindow.querySelector('.window__button--expand');
+    windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
 
     /* apply content to the new window */
     const clonedTargetContent = evt.target.querySelector('.file__content').cloneNode(true);
