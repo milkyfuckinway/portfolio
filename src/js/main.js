@@ -1,1 +1,1 @@
-import './modules/note.js';
+import './modules/window.js';

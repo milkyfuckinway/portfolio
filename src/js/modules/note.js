@@ -1,3 +1,5 @@
+import { throttle } from './throttle.js';
+
 let deviceType = '';
 
 const isTouchDevice = () => {
@@ -55,6 +57,7 @@ let lastFile;
 const fileList = document.querySelectorAll('.file');
 
 fileList.forEach((item) => {
+  console.log('fileList forEach');
   const window = windowTemplate.cloneNode(true);
   const windowDraggableArea = window.querySelector('.window__draggable-area');
   const windowHeader = window.querySelector('.window__header');
@@ -70,11 +73,13 @@ fileList.forEach((item) => {
   reference.insertBefore(referenceIcon, referenceText);
   const pathIcon = item.querySelector('.file__icon').cloneNode(true);
 
-  if (windowPath) {
+  if (window) {
     windowDraggableArea.insertBefore(pathIcon, windowPath);
+    console.log('windowPath');
   }
 
   const placeOnTop = () => {
+    console.log('placeOnTop');
     const newzIndex = initialzIndex + 1;
     window.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
@@ -87,6 +92,7 @@ fileList.forEach((item) => {
   };
 
   const setActive = () => {
+    console.log('setActive');
     const referenceList = document.querySelectorAll('.reference');
     referenceList.forEach((refernce) => {
       refernce.classList.remove('reference--active');
@@ -95,20 +101,102 @@ fileList.forEach((item) => {
   };
 
   const onCollapseButton = () => {
+    console.log('onCollapseButton');
     setActive();
     if (window.classList.contains('window--collapsed')) {
       window.classList.remove('window--collapsed');
       placeOnTop();
+      console.log(' containsonCollapseButton');
     } else {
       if (reference !== lastFile) {
+        console.log(' creference !== lastFile');
         placeOnTop();
       } else {
         window.classList.add('window--collapsed');
+        console.log('window--collapse');
       }
     }
   };
 
+  const onCloseButton = () => {
+    console.log('onCloseButton');
+    window.classList.add('window--collapsed');
+    fileLabel.classList.remove('file__label--active');
+    removeWindowListeners();
+    reference.remove();
+    window.remove();
+    fileLabel.addEventListener(events[deviceType].click, onFileOpen);
+    if (offsetVerticalCounter > 0) {
+      offsetVerticalCounter -= 1;
+      initialWindowCounterVertical -= 30;
+      console.log('offsetVerticalCounter');
+    }
+    if (offsetHorisontalCounter > 0) {
+      console.log('offsetHorisontalCounter');
+      offsetHorisontalCounter -= 1;
+      initialWindowCounterHorisontal -= 10;
+    }
+  };
+
+  const onExpandButton = () => {
+    console.log('onExpandButton');
+    window.classList.remove('window--collapsed');
+    window.classList.toggle('window--fullscreen');
+  };
+
+  const onWindowClick = () => {
+    console.log('onWindowClick');
+    setActive();
+    placeOnTop();
+  };
+
+  let i = 0;
+  const onMoveEvent = (evt) => {
+    console.log(i);
+    i += 1;
+    console.log('onMoveEvent');
+    if (moveElement) {
+      console.log('onMoveEvent moveElement');
+      const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
+      const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
+      window.style.left = `${window.offsetLeft - (initialX - newX)}px`;
+      window.style.top = `${window.offsetTop - (initialY - newY)}px`;
+      initialX = newX;
+      initialY = newY;
+    }
+  };
+
+  const onMoveThrottled = throttle(onMoveEvent, 10);
+
+  function stopMovement() {
+    console.log('stopMovement');
+    moveElement = false;
+    document.removeEventListener(events[deviceType].move, onMoveThrottled);
+    document.removeEventListener(events[deviceType].up, stopMovement);
+  }
+
+  const onWindowDrag = (evt) => {
+    console.log('onWindowDrag');
+    if (evt.cancelable) {
+      console.log('preventDefault');
+      evt.preventDefault();
+    }
+    if (!window.classList.contains('window--fullscreen')) {
+      console.log('contains(window--fullscreen))');
+      moveElement = true;
+      initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
+      initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
+      document.addEventListener(events[deviceType].move, onMoveThrottled);
+      document.addEventListener(events[deviceType].up, stopMovement);
+    }
+  };
+
+  if (fileLabel) {
+    fileLabel.addEventListener(events[deviceType].click, onFileOpen);
+    console.log('fileLabel');
+  }
   function onFileOpen() {
+    console.log('onFileOpen');
     if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
       const fileContent = item.querySelector('.file__content');
       if (fileContent) {
@@ -151,87 +239,26 @@ fileList.forEach((item) => {
       stopMovement();
       setActive();
       placeOnTop();
+      if (window) {
+        addWindowListeners();
+      }
     }
   }
-
-  const onCloseButton = () => {
-    window.classList.add('window--collapsed');
-    fileLabel.classList.remove('file__label--active');
-    reference.remove();
-    window.remove();
-    fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-    if (offsetVerticalCounter > 0) {
-      offsetVerticalCounter -= 1;
-      initialWindowCounterVertical -= 30;
-    }
-    if (offsetHorisontalCounter > 0) {
-      offsetHorisontalCounter -= 1;
-      initialWindowCounterHorisontal -= 10;
-    }
-  };
-
-  const onExpandButton = () => {
-    window.classList.remove('window--collapsed');
-    window.classList.toggle('window--fullscreen');
-  };
-
-  const onWindowClick = () => {
-    setActive();
-    placeOnTop();
-  };
-
-  const onMoveEvent = (evt) => {
-    if (moveElement) {
-      const newX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
-      const newY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
-      window.style.left = `${window.offsetLeft - (initialX - newX)}px`;
-      window.style.top = `${window.offsetTop - (initialY - newY)}px`;
-      initialX = newX;
-      initialY = newY;
-    }
-  };
-
-  function stopMovement() {
-    moveElement = false;
-    document.removeEventListener(events[deviceType].move, onMoveEvent);
-    document.removeEventListener(events[deviceType].up, stopMovement);
-  }
-
-  const onWindowDrag = (evt) => {
-    if (evt.cancelable) {
-      evt.preventDefault();
-    }
-    if (!window.classList.contains('window--fullscreen')) {
-      moveElement = true;
-      initialX = !isTouchDevice() ? evt.clientX : evt.touches[0].clientX;
-      initialY = !isTouchDevice() ? evt.clientY : evt.touches[0].clientY;
-      document.addEventListener(events[deviceType].move, onMoveEvent);
-      document.addEventListener(events[deviceType].up, stopMovement);
-    }
-  };
-
-  if (fileLabel) {
-    fileLabel.addEventListener(events[deviceType].click, onFileOpen);
-  }
-
-  if (windowButtonCollapse) {
+  function addWindowListeners() {
+    console.log('addWindowListeners');
     windowButtonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
-  }
-
-  if (windowButtonClose) {
     windowButtonClose.addEventListener(events[deviceType].click, onCloseButton);
-  }
-
-  if (windowButtonExpand) {
     windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
-  }
-
-  if (window) {
     window.addEventListener(events[deviceType].down, onWindowClick);
-  }
-
-  if (windowDraggableArea) {
     windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+  }
+  function removeWindowListeners() {
+    console.log('removeWindowListeners');
+    windowButtonCollapse.removeEventListener(events[deviceType].click, onCollapseButton);
+    windowButtonClose.removeEventListener(events[deviceType].click, onCloseButton);
+    windowButtonExpand.removeEventListener(events[deviceType].click, onExpandButton);
+    window.removeEventListener(events[deviceType].down, onWindowClick);
+    windowDraggableArea.removeEventListener(events[deviceType].down, onWindowDrag);
   }
 });
 

@@ -38,7 +38,7 @@
   width: 100%;
 }
 
-.window__header--active {
+.window--active .window__header {
   background-color: hsl(223deg 90% 40%);
 }
 
@@ -157,7 +157,7 @@
   padding: 10px;
 }
 
-.window--folder {
+.window__content--folder {
   background-color: #ffffff;
   border: 10px solid #c4c1bc;
   display: grid;

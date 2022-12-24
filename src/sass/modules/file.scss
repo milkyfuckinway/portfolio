@@ -1,8 +1,12 @@
-.file__label {
+.file {
   cursor: pointer;
+}
+
+.file__label {
   display: grid;
   gap: 5px;
   grid-template-rows: 40px 30px;
+  pointer-events: none;
 
   &:hover {
     outline: 1px dotted #000000;
