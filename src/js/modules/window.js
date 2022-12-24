@@ -80,8 +80,8 @@ fileList.forEach((item) => {
         e.preventDefault();
       }
       if (!newWindow.classList.contains('window--fullscreen')) {
-        initialX = !isTouchDevice() ? e.clientX : evt.touches[0].clientX;
-        initialY = !isTouchDevice() ? e.clientY : evt.touches[0].clientY;
+        initialX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
+        initialY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
         document.addEventListener(events[deviceType].move, onMoveEvent);
         document.addEventListener(events[deviceType].up, onMoveStop);
       }
