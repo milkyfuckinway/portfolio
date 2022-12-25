@@ -51,8 +51,9 @@ const setCurrentReferenceActive = (ref) => {
 };
 
 fileList.forEach((item) => {
+  const onFileOpenThrottled = throttle(onFileOpen, 100);
   function onFileOpen(evt) {
-    evt.target.removeEventListener(events[deviceType].click, onFileOpen);
+    evt.target.removeEventListener(events[deviceType].click, onFileOpenThrottled);
     const fileName = evt.target.querySelector('.file__name');
     const pathIcon = evt.target.querySelector('.file__icon').cloneNode(true);
     const newWindow = windowTemplate.cloneNode(true);
@@ -78,13 +79,12 @@ fileList.forEach((item) => {
         initialY = newY;
       }
     };
-
+    const onMoveEventThrottled = throttle(onMoveEvent, 20);
     const onMoveStop = () => {
-      document.removeEventListener(events[deviceType].move, onMoveEvent);
+      document.removeEventListener(events[deviceType].move, onMoveEventThrottled);
       document.removeEventListener(events[deviceType].up, onMoveStop);
       moveElement = false;
     };
-
     const onWindowDrag = (e) => {
       if (e.cancelable) {
         e.preventDefault();
@@ -93,12 +93,14 @@ fileList.forEach((item) => {
         moveElement = true;
         initialX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
         initialY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
-        document.addEventListener(events[deviceType].move, onMoveEvent);
+        document.addEventListener(events[deviceType].move, onMoveEventThrottled);
         document.addEventListener(events[deviceType].up, onMoveStop);
       }
     };
 
-    windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+    const onWindowDragThrottled = throttle(onWindowDrag, 20);
+
+    windowDraggableArea.addEventListener(events[deviceType].down, onWindowDragThrottled);
     newWindow.addEventListener(events[deviceType].down, () => {
       setCurrentWindowActive(newWindow, reference);
       setCurrentReferenceActive(reference);
@@ -164,6 +166,6 @@ fileList.forEach((item) => {
   }
 
   if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
-    item.addEventListener(events[deviceType].click, onFileOpen);
+    item.addEventListener(events[deviceType].click, onFileOpenThrottled);
   }
 });
