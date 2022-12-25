@@ -46,18 +46,6 @@ const setStartPosition = (elem) => {
   }
 };
 
-const setCurrentWindowActive = (win, ref) => {
-  lastFile = ref;
-  const newzIndex = initialzIndex + 1;
-  win.style.zIndex = `${newzIndex}`;
-  initialzIndex = newzIndex;
-  const allWindows = desktop.querySelectorAll('.window');
-  allWindows.forEach((c) => {
-    c.classList.remove('window--active');
-  });
-  win.classList.add('window--active');
-};
-
 const setCurrentReferenceActive = (ref) => {
   const allReferences = desktop.querySelectorAll('.reference');
   allReferences.forEach((b) => {
@@ -82,7 +70,6 @@ fileList.forEach((item) => {
     windowDraggableArea.insertBefore(pathIcon, newWindowPath);
     desktop.appendChild(newWindow);
     setStartPosition(newWindow);
-    setCurrentWindowActive(newWindow, reference);
     setCurrentReferenceActive(reference);
 
     const onMoveEvent = (e) => {
@@ -116,7 +103,22 @@ fileList.forEach((item) => {
       }
     };
 
-    windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+    function setCurrentWindowActive() {
+      lastFile = reference;
+      const newzIndex = initialzIndex + 1;
+      newWindow.style.zIndex = `${newzIndex}`;
+      initialzIndex = newzIndex;
+      const allWindows = desktop.querySelectorAll('.window');
+      allWindows.forEach((c) => {
+        c.classList.remove('window--active');
+        const allDraggebleAreas = c.querySelector('.window__draggable-area');
+        allDraggebleAreas.removeEventListener(events[deviceType].down, onWindowDrag);
+      });
+      windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+      newWindow.classList.add('window--active');
+    }
+
+    setCurrentWindowActive();
 
     newWindow.addEventListener(events[deviceType].down, () => {
       setCurrentWindowActive(newWindow, reference);
