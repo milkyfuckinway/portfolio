@@ -14,6 +14,10 @@ let initialX = 0;
 let initialY = 0;
 let lastFile;
 let moveElement = false;
+let initialWindowCounterVertical = 0;
+let initialWindowCounterHorisontal = 0;
+let offsetVerticalCounter = 0;
+let offsetHorisontalCounter = 0;
 
 desktopFooter.addEventListener('wheel', (evt) => {
   evt.preventDefault();
@@ -22,10 +26,24 @@ desktopFooter.addEventListener('wheel', (evt) => {
 
 const setStartPosition = (elem) => {
   elem.classList.remove('window--collapsed');
-  elem.style.left = `${desktop.offsetWidth / 2 /* + initialWindowCounterHorisontal*/}px`;
-  elem.style.top = `${desktop.offsetHeight / 2 /* +  initialWindowCounterVertical*/}px`;
+  elem.style.left = `${desktop.offsetWidth / 2 + initialWindowCounterHorisontal}px`;
+  elem.style.top = `${desktop.offsetHeight / 2 + initialWindowCounterVertical}px`;
   elem.style.width = `${Math.round(window.innerWidth * 0.7)}px`;
   elem.style.height = `${Math.round(window.innerHeight * 0.7)}px`;
+  if (initialWindowCounterHorisontal + (desktop.offsetWidth - elem.offsetWidth) / 2 + 10 + elem.offsetWidth >= desktop.offsetWidth) {
+    initialWindowCounterHorisontal = 0;
+    offsetHorisontalCounter = 0;
+  } else {
+    initialWindowCounterHorisontal += 10;
+    offsetHorisontalCounter += 1;
+  }
+  if (initialWindowCounterVertical + (desktop.offsetHeight - elem.offsetHeight) / 2 + 30 + elem.offsetHeight >= desktop.offsetHeight) {
+    initialWindowCounterVertical = 0;
+    offsetVerticalCounter = 0;
+  } else {
+    initialWindowCounterVertical += 30;
+    offsetVerticalCounter += 1;
+  }
 };
 
 const setCurrentWindowActive = (win, ref) => {
@@ -78,11 +96,13 @@ fileList.forEach((item) => {
       }
     };
     const onMoveEventThrottled = throttle(onMoveEvent, 10);
+
     const onMoveStop = () => {
       document.removeEventListener(events[deviceType].move, onMoveEventThrottled);
       document.removeEventListener(events[deviceType].up, onMoveStop);
       moveElement = false;
     };
+
     const onWindowDrag = (e) => {
       if (e.cancelable) {
         e.preventDefault();
@@ -97,6 +117,7 @@ fileList.forEach((item) => {
     };
 
     windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+
     newWindow.addEventListener(events[deviceType].down, () => {
       setCurrentWindowActive(newWindow, reference);
       setCurrentReferenceActive(reference);
@@ -122,10 +143,18 @@ fileList.forEach((item) => {
     const onCloseButton = () => {
       newWindow.remove();
       pathIcon.remove();
-      item.addEventListener(events[deviceType].click, onFileOpen);
+      item.addEventListener(events[deviceType].click, onFileOpenThrottled);
       reference.remove();
       clonedTargetContent.remove();
       referenceIcon.remove();
+      if (offsetVerticalCounter > 0) {
+        offsetVerticalCounter -= 1;
+        initialWindowCounterVertical -= 30;
+      }
+      if (offsetHorisontalCounter > 0) {
+        offsetHorisontalCounter -= 1;
+        initialWindowCounterHorisontal -= 10;
+      }
     };
 
     const windowButtonClose = newWindow.querySelector('.window__button--close');
