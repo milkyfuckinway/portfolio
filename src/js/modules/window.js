@@ -70,6 +70,9 @@ fileList.forEach((item) => {
     setCurrentReferenceActive(reference);
 
     const onMoveEvent = (e) => {
+      if (e.cancelable) {
+        e.preventDefault();
+      }
       if (moveElement === true) {
         const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
         const newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
