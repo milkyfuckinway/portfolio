@@ -70,9 +70,6 @@ fileList.forEach((item) => {
     setCurrentReferenceActive(reference);
 
     const onMoveEvent = (e) => {
-      if (e.cancelable) {
-        e.preventDefault();
-      }
       if (moveElement === true) {
         const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
         const newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
@@ -82,7 +79,7 @@ fileList.forEach((item) => {
         initialY = newY;
       }
     };
-    const onMoveEventThrottled = throttle(onMoveEvent, 20);
+    const onMoveEventThrottled = throttle(onMoveEvent, 10);
     const onMoveStop = () => {
       document.removeEventListener(events[deviceType].move, onMoveEventThrottled);
       document.removeEventListener(events[deviceType].up, onMoveStop);
@@ -101,9 +98,7 @@ fileList.forEach((item) => {
       }
     };
 
-    const onWindowDragThrottled = throttle(onWindowDrag, 20);
-
-    windowDraggableArea.addEventListener(events[deviceType].down, onWindowDragThrottled);
+    windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
     newWindow.addEventListener(events[deviceType].down, () => {
       setCurrentWindowActive(newWindow, reference);
       setCurrentReferenceActive(reference);
