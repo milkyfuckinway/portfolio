@@ -13,6 +13,7 @@ let initialzIndex = 0;
 let initialX = 0;
 let initialY = 0;
 let lastFile;
+let moveElement = false;
 
 desktopFooter.addEventListener('wheel', (evt) => {
   evt.preventDefault();
@@ -65,16 +66,20 @@ fileList.forEach((item) => {
     setCurrentReferenceActive(reference);
 
     const onMoveEvent = (e) => {
-      const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
-      const newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
-      newWindow.style.left = `${newWindow.offsetLeft - (initialX - newX)}px`;
-      newWindow.style.top = `${newWindow.offsetTop - (initialY - newY)}px`;
-      initialX = newX;
-      initialY = newY;
+      if (moveElement === true) {
+        const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
+        const newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
+        newWindow.style.left = `${newWindow.offsetLeft - (initialX - newX)}px`;
+        newWindow.style.top = `${newWindow.offsetTop - (initialY - newY)}px`;
+        initialX = newX;
+        initialY = newY;
+      }
     };
 
     const onMoveStop = () => {
       document.removeEventListener(events[deviceType].move, onMoveEvent);
+      document.removeEventListener(events[deviceType].up, onMoveStop);
+      moveElement = false;
     };
 
     const onWindowDrag = (e) => {
@@ -82,6 +87,7 @@ fileList.forEach((item) => {
         e.preventDefault();
       }
       if (!newWindow.classList.contains('window--fullscreen')) {
+        moveElement = true;
         initialX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
         initialY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
         document.addEventListener(events[deviceType].move, onMoveEvent);
