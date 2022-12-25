@@ -55,6 +55,8 @@ fileList.forEach((item) => {
     const newWindowPath = newWindow.querySelector('.window__path');
     const windowDraggableArea = newWindow.querySelector('.window__draggable-area');
     const reference = referenceTemplate.cloneNode(true);
+    const clonedTargetContent = evt.target.querySelector('.file__content').cloneNode(true);
+    const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
     newWindowPath.textContent = fileName.textContent;
     windowDraggableArea.insertBefore(pathIcon, newWindowPath);
     desktop.appendChild(newWindow);
@@ -112,8 +114,11 @@ fileList.forEach((item) => {
 
     const onCloseButton = () => {
       newWindow.remove();
+      pathIcon.remove();
       item.addEventListener(events[deviceType].click, onFileOpen);
       reference.remove();
+      clonedTargetContent.remove();
+      referenceIcon.remove();
     };
 
     const windowButtonClose = newWindow.querySelector('.window__button--close');
@@ -130,7 +135,6 @@ fileList.forEach((item) => {
     windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
 
     /* apply content to the new window */
-    const clonedTargetContent = evt.target.querySelector('.file__content').cloneNode(true);
     newWindow.appendChild(clonedTargetContent);
     clonedTargetContent.classList.remove('visually-hidden');
     clonedTargetContent.classList.add('window__content');
@@ -145,7 +149,6 @@ fileList.forEach((item) => {
     /* create reference */
     const referenceText = reference.querySelector('.reference__text');
     referenceText.textContent = fileName.textContent;
-    const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
     reference.insertBefore(referenceIcon, referenceText);
     desktopFooter.appendChild(reference);
     reference.addEventListener(events[deviceType].click, onCollapseButton);
