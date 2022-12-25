@@ -25,6 +25,9 @@ const setStartPosition = (elem) => {
   elem.style.left = `${desktop.offsetWidth / 2 /* + initialWindowCounterHorisontal*/}px`;
   elem.style.top = `${desktop.offsetHeight / 2 /* +  initialWindowCounterVertical*/}px`;
   elem.style.transform = 'translate(-50%, -50%)';
+  elem.style.position = 'absolute';
+  elem.style.minWidth = `${Math.round(window.innerWidth * 0.7)}px`;
+  elem.style.minHeight = `${Math.round(window.innerHeight * 0.7)}px`;
 };
 
 const setCurrentWindowActive = (win, ref) => {
