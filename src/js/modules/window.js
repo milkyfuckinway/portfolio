@@ -150,7 +150,7 @@ fileList.forEach((item) => {
       const innerFiles = newWindow.querySelectorAll('.file');
       clonedTargetContent.classList.add('window__content--folder');
       innerFiles.forEach((file) => {
-        file.addEventListener(events[deviceType].click, onFileOpen);
+        file.addEventListener(events[deviceType].click, onFileOpenThrottled);
       });
     }
     /* create reference */
