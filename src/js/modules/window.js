@@ -82,7 +82,8 @@ fileList.forEach((item) => {
         initialY = newY;
       }
     };
-    const onMoveEventThrottled = throttle(onMoveEvent, 10);
+
+    const onMoveEventThrottled = throttle(onMoveEvent);
 
     const onMoveStop = () => {
       document.removeEventListener(events[deviceType].move, onMoveEventThrottled);
@@ -103,28 +104,6 @@ fileList.forEach((item) => {
       }
     };
 
-    function setCurrentWindowActive() {
-      lastFile = reference;
-      const newzIndex = initialzIndex + 1;
-      newWindow.style.zIndex = `${newzIndex}`;
-      initialzIndex = newzIndex;
-      const allWindows = desktop.querySelectorAll('.window');
-      allWindows.forEach((c) => {
-        c.classList.remove('window--active');
-        const allDraggebleAreas = c.querySelector('.window__draggable-area');
-        allDraggebleAreas.removeEventListener(events[deviceType].down, onWindowDrag);
-      });
-      windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
-      newWindow.classList.add('window--active');
-    }
-
-    setCurrentWindowActive();
-
-    newWindow.addEventListener(events[deviceType].down, () => {
-      setCurrentWindowActive(newWindow, reference);
-      setCurrentReferenceActive(reference);
-    });
-
     const onCollapseButton = () => {
       setCurrentReferenceActive(reference);
       if (newWindow.classList.contains('window--collapsed')) {
@@ -138,9 +117,6 @@ fileList.forEach((item) => {
         }
       }
     };
-
-    const windowButtonCollapse = newWindow.querySelector('.window__button--collapse');
-    windowButtonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
 
     const onCloseButton = () => {
       newWindow.remove();
@@ -159,9 +135,6 @@ fileList.forEach((item) => {
       }
     };
 
-    const windowButtonClose = newWindow.querySelector('.window__button--close');
-    windowButtonClose.addEventListener(events[deviceType].click, onCloseButton);
-
     const onExpandButton = () => {
       if (newWindow.classList.contains('window--fullscreen')) {
         newWindow.classList.remove('window--fullscreen');
@@ -169,8 +142,41 @@ fileList.forEach((item) => {
         newWindow.classList.add('window--fullscreen');
       }
     };
+
     const windowButtonExpand = newWindow.querySelector('.window__button--expand');
-    windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
+    const windowButtonClose = newWindow.querySelector('.window__button--close');
+    const windowButtonCollapse = newWindow.querySelector('.window__button--collapse');
+
+    function setCurrentWindowActive() {
+      lastFile = reference;
+      const newzIndex = initialzIndex + 1;
+      newWindow.style.zIndex = `${newzIndex}`;
+      initialzIndex = newzIndex;
+      const allWindows = desktop.querySelectorAll('.window');
+      allWindows.forEach((c) => {
+        c.classList.remove('window--active');
+        const allDraggebleAreas = c.querySelector('.window__draggable-area');
+        allDraggebleAreas.removeEventListener(events[deviceType].down, onWindowDrag);
+        const allButtonCollapse = c.querySelector('.window__button--collapse');
+        allButtonCollapse.removeEventListener(events[deviceType].click, onCollapseButton);
+        const allButtonClose = c.querySelector('.window__button--close');
+        allButtonClose.removeEventListener(events[deviceType].click, onCloseButton);
+        const allButtonExpand = c.querySelector('.window__button--expand');
+        allButtonExpand.removeEventListener(events[deviceType].click, onExpandButton);
+      });
+      windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
+      windowButtonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
+      windowButtonClose.addEventListener(events[deviceType].click, onCloseButton);
+      windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
+      newWindow.classList.add('window--active');
+    }
+
+    setCurrentWindowActive();
+
+    newWindow.addEventListener(events[deviceType].down, () => {
+      setCurrentWindowActive(newWindow, reference);
+      setCurrentReferenceActive(reference);
+    });
 
     /* apply content to the new window */
     newWindow.appendChild(clonedTargetContent);
