@@ -56,6 +56,9 @@ const setCurrentReferenceActive = (ref) => {
 
 fileList.forEach((item) => {
   const onFileOpenThrottled = throttle(onFileOpen, 100);
+  if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
+    item.addEventListener(events[deviceType].click, onFileOpenThrottled);
+  }
   function onFileOpen(evt) {
     evt.target.removeEventListener(events[deviceType].click, onFileOpenThrottled);
     const fileName = evt.target.querySelector('.file__name');
@@ -108,12 +111,12 @@ fileList.forEach((item) => {
       setCurrentReferenceActive(reference);
       if (newWindow.classList.contains('window--collapsed')) {
         newWindow.classList.remove('window--collapsed');
-        setCurrentWindowActive(newWindow, reference);
+        setCurrentWindowActive();
       } else {
         if (reference === lastFile) {
           newWindow.classList.add('window--collapsed');
         } else {
-          setCurrentWindowActive(newWindow, reference);
+          setCurrentWindowActive();
         }
       }
     };
@@ -155,14 +158,10 @@ fileList.forEach((item) => {
       const allWindows = desktop.querySelectorAll('.window');
       allWindows.forEach((c) => {
         c.classList.remove('window--active');
-        const allDraggebleAreas = c.querySelector('.window__draggable-area');
-        allDraggebleAreas.removeEventListener(events[deviceType].down, onWindowDrag);
-        const allButtonCollapse = c.querySelector('.window__button--collapse');
-        allButtonCollapse.removeEventListener(events[deviceType].click, onCollapseButton);
-        const allButtonClose = c.querySelector('.window__button--close');
-        allButtonClose.removeEventListener(events[deviceType].click, onCloseButton);
-        const allButtonExpand = c.querySelector('.window__button--expand');
-        allButtonExpand.removeEventListener(events[deviceType].click, onExpandButton);
+        c.querySelector('.window__draggable-area').removeEventListener(events[deviceType].down, onWindowDrag);
+        c.querySelector('.window__button--collapse').removeEventListener(events[deviceType].click, onCollapseButton);
+        c.querySelector('.window__button--close').removeEventListener(events[deviceType].click, onCloseButton);
+        c.querySelector('.window__button--expand').removeEventListener(events[deviceType].click, onExpandButton);
       });
       windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
       windowButtonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
@@ -174,7 +173,7 @@ fileList.forEach((item) => {
     setCurrentWindowActive();
 
     newWindow.addEventListener(events[deviceType].down, () => {
-      setCurrentWindowActive(newWindow, reference);
+      setCurrentWindowActive();
       setCurrentReferenceActive(reference);
     });
 
@@ -196,9 +195,5 @@ fileList.forEach((item) => {
     reference.insertBefore(referenceIcon, referenceText);
     desktopFooter.appendChild(reference);
     reference.addEventListener(events[deviceType].click, onCollapseButton);
-  }
-
-  if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
-    item.addEventListener(events[deviceType].click, onFileOpenThrottled);
   }
 });
