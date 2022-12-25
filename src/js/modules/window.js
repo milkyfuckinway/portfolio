@@ -45,27 +45,48 @@ const setStartPosition = (elem) => {
     offsetVerticalCounter += 1;
   }
 };
-
-const setCurrentReferenceActive = (ref) => {
-  const allReferences = desktop.querySelectorAll('.reference');
-  allReferences.forEach((b) => {
-    b.classList.remove('reference--active');
+const setCurrentWindowActive = (ref, win, drag, collapse, close, expand) => {
+  lastFile = ref;
+  const newzIndex = initialzIndex + 1;
+  win.style.zIndex = `${newzIndex}`;
+  initialzIndex = newzIndex;
+  win.classList.add('window--active');
+  desktop.querySelectorAll('.window').forEach((a) => {
+    a.classList.remove('window--active');
+    a.querySelector('.window__draggable-area').removeEventListener(events[deviceType].down, drag);
+    a.querySelector('.window__button--collapse').removeEventListener(events[deviceType].click, collapse);
+    a.querySelector('.window__button--close').removeEventListener(events[deviceType].click, close);
+    a.querySelector('.window__button--expand').removeEventListener(events[deviceType].click, expand);
+    if (a === win) {
+      a.classList.add('window--active');
+      a.querySelector('.window__draggable-area').addEventListener(events[deviceType].down, drag);
+      a.querySelector('.window__button--collapse').addEventListener(events[deviceType].click, collapse);
+      a.querySelector('.window__button--close').addEventListener(events[deviceType].click, close);
+      a.querySelector('.window__button--expand').addEventListener(events[deviceType].click, expand);
+    }
   });
-  ref.classList.add('reference--active');
+  desktop.querySelectorAll('.reference').forEach((b) => {
+    if (b === lastFile) {
+      b.classList.add('reference--active');
+    } else {
+      b.classList.remove('reference--active');
+    }
+  });
 };
 
 fileList.forEach((item) => {
-  const onFileOpenThrottled = throttle(onFileOpen, 100);
   if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
-    item.addEventListener(events[deviceType].click, onFileOpenThrottled);
+    item.addEventListener(events[deviceType].click, onFileOpen);
   }
   function onFileOpen(evt) {
-    evt.target.removeEventListener(events[deviceType].click, onFileOpenThrottled);
+    evt.target.removeEventListener(events[deviceType].click, onFileOpen);
+    const fileLabel = evt.target.querySelector('.file__label');
     const fileName = evt.target.querySelector('.file__name');
     const pathIcon = evt.target.querySelector('.file__icon').cloneNode(true);
     const newWindow = windowTemplate.cloneNode(true);
     const newWindowPath = newWindow.querySelector('.window__path');
-    const windowDraggableArea = newWindow.querySelector('.window__draggable-area');
+    const windowHeader = newWindow.querySelector('.window__header');
+    const windowDraggableArea = windowHeader.querySelector('.window__draggable-area');
     const reference = referenceTemplate.cloneNode(true);
     const clonedTargetContent = evt.target.querySelector('.file__content').cloneNode(true);
     const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
@@ -73,7 +94,8 @@ fileList.forEach((item) => {
     windowDraggableArea.insertBefore(pathIcon, newWindowPath);
     desktop.appendChild(newWindow);
     setStartPosition(newWindow);
-    setCurrentReferenceActive(reference);
+    fileLabel.classList.add('file__label--active');
+    setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
 
     const onMoveEvent = (e) => {
       if (moveElement === true) {
@@ -86,15 +108,13 @@ fileList.forEach((item) => {
       }
     };
 
-    const onMoveEventThrottled = throttle(onMoveEvent);
-
     const onMoveStop = () => {
-      document.removeEventListener(events[deviceType].move, onMoveEventThrottled);
+      document.removeEventListener(events[deviceType].move, onMoveEvent);
       document.removeEventListener(events[deviceType].up, onMoveStop);
       moveElement = false;
     };
 
-    const onWindowDrag = (e) => {
+    function onWindowDrag(e) {
       if (e.cancelable) {
         e.preventDefault();
       }
@@ -102,32 +122,32 @@ fileList.forEach((item) => {
         moveElement = true;
         initialX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
         initialY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
-        document.addEventListener(events[deviceType].move, onMoveEventThrottled);
+        document.addEventListener(events[deviceType].move, onMoveEvent);
         document.addEventListener(events[deviceType].up, onMoveStop);
       }
-    };
+    }
 
-    const onCollapseButton = () => {
-      setCurrentReferenceActive(reference);
+    function onCollapseButton() {
       if (newWindow.classList.contains('window--collapsed')) {
         newWindow.classList.remove('window--collapsed');
-        setCurrentWindowActive();
+        setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
       } else {
         if (reference === lastFile) {
           newWindow.classList.add('window--collapsed');
         } else {
-          setCurrentWindowActive();
+          setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
         }
       }
-    };
+    }
 
-    const onCloseButton = () => {
+    function onCloseButton() {
       newWindow.remove();
       pathIcon.remove();
-      item.addEventListener(events[deviceType].click, onFileOpenThrottled);
+      item.addEventListener(events[deviceType].click, onFileOpen);
       reference.remove();
       clonedTargetContent.remove();
       referenceIcon.remove();
+      fileLabel.classList.remove('file__label--active');
       if (offsetVerticalCounter > 0) {
         offsetVerticalCounter -= 1;
         initialWindowCounterVertical -= 30;
@@ -136,48 +156,20 @@ fileList.forEach((item) => {
         offsetHorisontalCounter -= 1;
         initialWindowCounterHorisontal -= 10;
       }
-    };
+    }
 
-    const onExpandButton = () => {
+    function onExpandButton() {
       if (newWindow.classList.contains('window--fullscreen')) {
         newWindow.classList.remove('window--fullscreen');
       } else {
         newWindow.classList.add('window--fullscreen');
       }
-    };
-
-    const windowButtonExpand = newWindow.querySelector('.window__button--expand');
-    const windowButtonClose = newWindow.querySelector('.window__button--close');
-    const windowButtonCollapse = newWindow.querySelector('.window__button--collapse');
-
-    function setCurrentWindowActive() {
-      lastFile = reference;
-      const newzIndex = initialzIndex + 1;
-      newWindow.style.zIndex = `${newzIndex}`;
-      initialzIndex = newzIndex;
-      const allWindows = desktop.querySelectorAll('.window');
-      allWindows.forEach((c) => {
-        c.classList.remove('window--active');
-        c.querySelector('.window__draggable-area').removeEventListener(events[deviceType].down, onWindowDrag);
-        c.querySelector('.window__button--collapse').removeEventListener(events[deviceType].click, onCollapseButton);
-        c.querySelector('.window__button--close').removeEventListener(events[deviceType].click, onCloseButton);
-        c.querySelector('.window__button--expand').removeEventListener(events[deviceType].click, onExpandButton);
-      });
-      windowDraggableArea.addEventListener(events[deviceType].down, onWindowDrag);
-      windowButtonCollapse.addEventListener(events[deviceType].click, onCollapseButton);
-      windowButtonClose.addEventListener(events[deviceType].click, onCloseButton);
-      windowButtonExpand.addEventListener(events[deviceType].click, onExpandButton);
-      newWindow.classList.add('window--active');
     }
 
-    setCurrentWindowActive();
-
-    newWindow.addEventListener(events[deviceType].down, () => {
-      setCurrentWindowActive();
-      setCurrentReferenceActive(reference);
+    newWindow.addEventListener(events[deviceType].up, () => {
+      setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
     });
 
-    /* apply content to the new window */
     newWindow.appendChild(clonedTargetContent);
     clonedTargetContent.classList.remove('visually-hidden');
     clonedTargetContent.classList.add('window__content');
@@ -186,10 +178,10 @@ fileList.forEach((item) => {
       const innerFiles = newWindow.querySelectorAll('.file');
       clonedTargetContent.classList.add('window__content--folder');
       innerFiles.forEach((file) => {
-        file.addEventListener(events[deviceType].click, onFileOpenThrottled);
+        file.addEventListener(events[deviceType].click, onFileOpen);
       });
     }
-    /* create reference */
+
     const referenceText = reference.querySelector('.reference__text');
     referenceText.textContent = fileName.textContent;
     reference.insertBefore(referenceIcon, referenceText);
