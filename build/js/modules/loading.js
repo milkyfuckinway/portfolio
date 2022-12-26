@@ -1,1 +1,1 @@
-const loading=document.querySelector(".loading"),removeLoadingScreen=()=>{loading.remove()};setTimeout((()=>{removeLoadingScreen()}),3e3),removeLoadingScreen();
+const loading=document.querySelector(".loading"),removeLoadingScreen=()=>{loading.remove()};setTimeout((()=>{loading.remove()}),3e3);
