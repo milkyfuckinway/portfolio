@@ -8,15 +8,6 @@ const desktop = document.querySelector('.desktop');
 const desktopFooter = desktop.querySelector('.desktop__footer');
 const windowTemplate = template.querySelector('.window');
 const referenceTemplate = template.querySelector('.reference');
-let initialzIndex = 0;
-let initialX = 0;
-let initialY = 0;
-let lastFile;
-let moveElement = false;
-let initialWindowCounterVertical = 0;
-let initialWindowCounterHorisontal = 0;
-let offsetVerticalCounter = 0;
-let offsetHorisontalCounter = 0;
 const desktopWidth = desktop.offsetWidth;
 const desktopHeight = desktop.offsetHeight;
 const halfDesktopWidth = desktopWidth / 2;
@@ -24,21 +15,15 @@ const halfDesktopHeight = desktopHeight / 2;
 const windowWidth = Math.round(window.innerWidth * 0.7);
 const windowHeight = Math.round(window.innerHeight * 0.7);
 
-// const layerCoords = {
-//   x: 0,
-//   y: 0,
-// };
-
-desktopFooter.addEventListener('wheel', (evt) => {
-  evt.preventDefault();
-  desktopFooter.scrollLeft += evt.deltaY;
-});
-
-desktop.addEventListener(events[deviceType].click, (evt) => {
-  if (evt.target.closest('.file') && !evt.target.closest('.file--link')) {
-    onFileOpen(evt);
-  }
-});
+let initialzIndex = 0;
+let initialX = 0;
+let initialY = 0;
+let lastReference;
+let moveElement = false;
+let initialWindowCounterVertical = 0;
+let initialWindowCounterHorisontal = 0;
+let offsetVerticalCounter = 0;
+let offsetHorisontalCounter = 0;
 
 const setStartPosition = (elem) => {
   elem.classList.remove('window--collapsed');
@@ -62,7 +47,7 @@ const setStartPosition = (elem) => {
   }
 };
 
-function onFileOpen(evt) {
+const onFileOpen = (evt) => {
   evt.target.classList.remove('file');
   evt.target.classList.add('file--opened');
   const fileLabel = evt.target.querySelector('.file__label');
@@ -73,7 +58,11 @@ function onFileOpen(evt) {
   const windowHeader = newWindow.querySelector('.window__header');
   const windowDraggableArea = windowHeader.querySelector('.window__draggable-area');
   const reference = referenceTemplate.cloneNode(true);
-
+  newWindowPath.textContent = fileName.textContent;
+  windowDraggableArea.insertBefore(pathIcon, newWindowPath);
+  desktop.appendChild(newWindow);
+  setStartPosition(newWindow);
+  fileLabel.classList.add('file__label--active');
   const clonedTargetContent = evt.target.querySelector('.file__content').cloneNode(true);
   newWindow.appendChild(clonedTargetContent);
   clonedTargetContent.classList.remove('visually-hidden');
@@ -83,14 +72,8 @@ function onFileOpen(evt) {
     clonedTargetContent.classList.add('window__content--folder');
   }
 
-  newWindowPath.textContent = fileName.textContent;
-  windowDraggableArea.insertBefore(pathIcon, newWindowPath);
-  desktop.appendChild(newWindow);
-  setStartPosition(newWindow);
-  fileLabel.classList.add('file__label--active');
-
   const setCurrentWindowActive = () => {
-    lastFile = reference;
+    lastReference = reference;
     const newzIndex = initialzIndex + 1;
     newWindow.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
@@ -100,7 +83,7 @@ function onFileOpen(evt) {
     });
     newWindow.classList.add('window--active');
     desktop.querySelectorAll('.reference').forEach((b) => {
-      if (b === lastFile) {
+      if (b === lastReference) {
         b.classList.add('reference--active');
       } else {
         b.classList.remove('reference--active');
@@ -125,6 +108,7 @@ function onFileOpen(evt) {
       initialY = newY;
     }
   };
+
   const onMoveThrottled = throttle(onMoveEvent, 10);
 
   const onMoveStop = () => {
@@ -153,38 +137,11 @@ function onFileOpen(evt) {
       newWindow.classList.remove('window--collapsed');
       setCurrentWindowActive();
     } else {
-      if (reference === lastFile) {
+      if (reference === lastReference) {
         newWindow.classList.add('window--collapsed');
       } else {
         setCurrentWindowActive();
       }
-    }
-  };
-
-  const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
-  const referenceText = reference.querySelector('.reference__text');
-  referenceText.textContent = fileName.textContent;
-  reference.insertBefore(referenceIcon, referenceText);
-  desktopFooter.appendChild(reference);
-  reference.addEventListener(events[deviceType].click, onCollapseButton);
-
-  const onCloseButton = () => {
-    evt.target.classList.add('file');
-    evt.target.classList.remove('file--opened');
-    setCurrentWindowActive();
-    newWindow.remove();
-    pathIcon.remove();
-    reference.remove();
-    clonedTargetContent.remove();
-    referenceIcon.remove();
-    fileLabel.classList.remove('file__label--active');
-    if (offsetVerticalCounter > 0) {
-      offsetVerticalCounter -= 1;
-      initialWindowCounterVertical -= 30;
-    }
-    if (offsetHorisontalCounter > 0) {
-      offsetHorisontalCounter -= 1;
-      initialWindowCounterHorisontal -= 10;
     }
   };
 
@@ -196,6 +153,29 @@ function onFileOpen(evt) {
       newWindow.classList.add('window--fullscreen');
     }
   };
+
+  const onCloseButton = () => {
+    evt.target.classList.add('file');
+    evt.target.classList.remove('file--opened');
+    setCurrentWindowActive();
+    newWindow.remove();
+    fileLabel.classList.remove('file__label--active');
+    if (offsetVerticalCounter > 0) {
+      offsetVerticalCounter -= 1;
+      initialWindowCounterVertical -= 30;
+    }
+    if (offsetHorisontalCounter > 0) {
+      offsetHorisontalCounter -= 1;
+      initialWindowCounterHorisontal -= 10;
+    }
+  };
+
+  const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
+  const referenceText = reference.querySelector('.reference__text');
+  referenceText.textContent = fileName.textContent;
+  reference.insertBefore(referenceIcon, referenceText);
+  desktopFooter.appendChild(reference);
+  reference.addEventListener(events[deviceType].click, onCollapseButton);
 
   newWindow.addEventListener(events[deviceType].down, (e) => {
     if (e.target.closest('.window__draggable-area')) {
@@ -217,4 +197,15 @@ function onFileOpen(evt) {
       onExpandButton();
     }
   });
-}
+};
+
+desktopFooter.addEventListener('wheel', (evt) => {
+  evt.preventDefault();
+  desktopFooter.scrollLeft += evt.deltaY;
+});
+
+desktop.addEventListener(events[deviceType].click, (evt) => {
+  if (evt.target.closest('.file') && !evt.target.closest('.file--link')) {
+    onFileOpen(evt);
+  }
+});
