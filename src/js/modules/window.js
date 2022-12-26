@@ -159,6 +159,7 @@ const onFileOpen = (evt) => {
     evt.target.classList.remove('file--opened');
     setCurrentWindowActive();
     newWindow.remove();
+    reference.remove();
     fileLabel.classList.remove('file__label--active');
     if (offsetVerticalCounter > 0) {
       offsetVerticalCounter -= 1;
