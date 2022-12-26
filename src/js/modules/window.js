@@ -1,4 +1,4 @@
-import { throttle } from './throttle.js';
+// import { throttle } from './throttle.js';
 import { events, isTouchDevice, deviceType } from './checkDeviceType.js';
 
 isTouchDevice();
@@ -45,34 +45,6 @@ const setStartPosition = (elem) => {
     offsetVerticalCounter += 1;
   }
 };
-const setCurrentWindowActive = (ref, win, drag, collapse, close, expand) => {
-  lastFile = ref;
-  const newzIndex = initialzIndex + 1;
-  win.style.zIndex = `${newzIndex}`;
-  initialzIndex = newzIndex;
-  win.classList.add('window--active');
-  desktop.querySelectorAll('.window').forEach((a) => {
-    a.classList.remove('window--active');
-    a.querySelector('.window__draggable-area').removeEventListener(events[deviceType].down, drag);
-    a.querySelector('.window__button--collapse').removeEventListener(events[deviceType].click, collapse);
-    a.querySelector('.window__button--close').removeEventListener(events[deviceType].click, close);
-    a.querySelector('.window__button--expand').removeEventListener(events[deviceType].click, expand);
-    if (a === win) {
-      a.classList.add('window--active');
-      a.querySelector('.window__draggable-area').addEventListener(events[deviceType].down, drag);
-      a.querySelector('.window__button--collapse').addEventListener(events[deviceType].click, collapse);
-      a.querySelector('.window__button--close').addEventListener(events[deviceType].click, close);
-      a.querySelector('.window__button--expand').addEventListener(events[deviceType].click, expand);
-    }
-  });
-  desktop.querySelectorAll('.reference').forEach((b) => {
-    if (b === lastFile) {
-      b.classList.add('reference--active');
-    } else {
-      b.classList.remove('reference--active');
-    }
-  });
-};
 
 fileList.forEach((item) => {
   if (item.classList.contains('file--text') || item.classList.contains('file--folder')) {
@@ -95,7 +67,26 @@ fileList.forEach((item) => {
     desktop.appendChild(newWindow);
     setStartPosition(newWindow);
     fileLabel.classList.add('file__label--active');
-    setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
+
+    const setCurrentWindowActive = () => {
+      lastFile = reference;
+      const newzIndex = initialzIndex + 1;
+      newWindow.style.zIndex = `${newzIndex}`;
+      initialzIndex = newzIndex;
+      desktop.querySelectorAll('.window--active').forEach((a) => {
+        a.classList.remove('window--active');
+      });
+      newWindow.classList.add('window--active');
+      desktop.querySelectorAll('.reference').forEach((b) => {
+        if (b === lastFile) {
+          b.classList.add('reference--active');
+        } else {
+          b.classList.remove('reference--active');
+        }
+      });
+    };
+
+    setCurrentWindowActive();
 
     const onMoveEvent = (e) => {
       if (moveElement === true) {
@@ -115,6 +106,7 @@ fileList.forEach((item) => {
     };
 
     function onWindowDrag(e) {
+      setCurrentWindowActive(reference, newWindow);
       if (e.cancelable) {
         e.preventDefault();
       }
@@ -126,21 +118,22 @@ fileList.forEach((item) => {
         document.addEventListener(events[deviceType].up, onMoveStop);
       }
     }
-
-    function onCollapseButton() {
+    const onCollapseButton = () => {
+      setCurrentWindowActive();
       if (newWindow.classList.contains('window--collapsed')) {
         newWindow.classList.remove('window--collapsed');
-        setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
+        setCurrentWindowActive();
       } else {
         if (reference === lastFile) {
           newWindow.classList.add('window--collapsed');
         } else {
-          setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
+          setCurrentWindowActive();
         }
       }
-    }
+    };
 
-    function onCloseButton() {
+    const onCloseButton = () => {
+      setCurrentWindowActive();
       newWindow.remove();
       pathIcon.remove();
       item.addEventListener(events[deviceType].click, onFileOpen);
@@ -156,18 +149,33 @@ fileList.forEach((item) => {
         offsetHorisontalCounter -= 1;
         initialWindowCounterHorisontal -= 10;
       }
-    }
+    };
 
-    function onExpandButton() {
+    const onExpandButton = () => {
+      setCurrentWindowActive(reference, newWindow);
       if (newWindow.classList.contains('window--fullscreen')) {
         newWindow.classList.remove('window--fullscreen');
       } else {
         newWindow.classList.add('window--fullscreen');
       }
-    }
+    };
 
-    newWindow.addEventListener(events[deviceType].up, () => {
-      setCurrentWindowActive(reference, newWindow, onWindowDrag, onCollapseButton, onCloseButton, onExpandButton);
+    newWindow.addEventListener(events[deviceType].down, (e) => {
+      if (e.target.closest('.window__draggable-area')) {
+        onWindowDrag(e);
+      }
+      if (e.target.closest('.window__button--collapse')) {
+        onCollapseButton();
+      }
+      if (e.target.closest('.window__button--close')) {
+        onCloseButton();
+      }
+      if (e.target.closest('.window__button--expand')) {
+        onExpandButton();
+      }
+      if (e.target.closest('.window__content')) {
+        setCurrentWindowActive();
+      }
     });
 
     newWindow.appendChild(clonedTargetContent);
