@@ -24,13 +24,18 @@ const halfDesktopHeight = desktopHeight / 2;
 const windowWidth = Math.round(window.innerWidth * 0.7);
 const windowHeight = Math.round(window.innerHeight * 0.7);
 
+// const layerCoords = {
+//   x: 0,
+//   y: 0,
+// };
+
 desktopFooter.addEventListener('wheel', (evt) => {
   evt.preventDefault();
   desktopFooter.scrollLeft += evt.deltaY;
 });
 
 desktop.addEventListener(events[deviceType].click, (evt) => {
-  if (evt.target.closest('.file')) {
+  if (evt.target.closest('.file') && !evt.target.closest('.file--link')) {
     onFileOpen(evt);
   }
 });
@@ -106,7 +111,8 @@ function onFileOpen(evt) {
   setCurrentWindowActive();
 
   const onMoveEvent = (e) => {
-    if (moveElement === true) {
+    if (moveElement) {
+      e.stopPropagation();
       const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
       const newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
       const calcX = initialX - newX;
@@ -127,8 +133,9 @@ function onFileOpen(evt) {
     moveElement = false;
   };
 
-  function onWindowDrag(e) {
+  const onWindowDrag = (e) => {
     setCurrentWindowActive();
+    e.stopPropagation();
     if (e.cancelable) {
       e.preventDefault();
     }
@@ -139,7 +146,7 @@ function onFileOpen(evt) {
       document.addEventListener(events[deviceType].move, onMoveThrottled);
       document.addEventListener(events[deviceType].up, onMoveStop);
     }
-  }
+  };
 
   const onCollapseButton = () => {
     if (newWindow.classList.contains('window--collapsed')) {
