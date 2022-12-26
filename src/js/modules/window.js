@@ -33,9 +33,6 @@ desktop.addEventListener(events[deviceType].click, (evt) => {
   if (evt.target.closest('.file')) {
     onFileOpen(evt);
   }
-  if (evt.target.closest('.reference')) {
-    console.log('reference');
-  }
 });
 
 const setStartPosition = (elem) => {
@@ -81,7 +78,6 @@ function onFileOpen(evt) {
     clonedTargetContent.classList.add('window__content--folder');
   }
 
-  const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
   newWindowPath.textContent = fileName.textContent;
   windowDraggableArea.insertBefore(pathIcon, newWindowPath);
   desktop.appendChild(newWindow);
@@ -93,6 +89,7 @@ function onFileOpen(evt) {
     const newzIndex = initialzIndex + 1;
     newWindow.style.zIndex = `${newzIndex}`;
     initialzIndex = newzIndex;
+    reference.classList.add('reference--active');
     desktop.querySelectorAll('.window--active').forEach((a) => {
       a.classList.remove('window--active');
     });
@@ -107,6 +104,7 @@ function onFileOpen(evt) {
   };
 
   setCurrentWindowActive();
+
   const onMoveEvent = (e) => {
     if (moveElement === true) {
       const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
@@ -144,7 +142,6 @@ function onFileOpen(evt) {
   }
 
   const onCollapseButton = () => {
-    setCurrentWindowActive();
     if (newWindow.classList.contains('window--collapsed')) {
       newWindow.classList.remove('window--collapsed');
       setCurrentWindowActive();
@@ -156,6 +153,13 @@ function onFileOpen(evt) {
       }
     }
   };
+
+  const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
+  const referenceText = reference.querySelector('.reference__text');
+  referenceText.textContent = fileName.textContent;
+  reference.insertBefore(referenceIcon, referenceText);
+  desktopFooter.appendChild(reference);
+  reference.addEventListener(events[deviceType].click, onCollapseButton);
 
   const onCloseButton = () => {
     evt.target.classList.add('file');
@@ -206,10 +210,4 @@ function onFileOpen(evt) {
       onExpandButton();
     }
   });
-
-  const referenceText = reference.querySelector('.reference__text');
-  referenceText.textContent = fileName.textContent;
-  reference.insertBefore(referenceIcon, referenceText);
-  desktopFooter.appendChild(reference);
-  reference.addEventListener(events[deviceType].click, onCollapseButton);
 }
