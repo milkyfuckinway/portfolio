@@ -1,4 +1,4 @@
-// import { throttle } from './throttle.js';
+import { throttle } from './throttle.js';
 import { events, isTouchDevice, deviceType } from './checkDeviceType.js';
 
 isTouchDevice();
@@ -17,6 +17,12 @@ let initialWindowCounterVertical = 0;
 let initialWindowCounterHorisontal = 0;
 let offsetVerticalCounter = 0;
 let offsetHorisontalCounter = 0;
+const desktopWidth = desktop.offsetWidth;
+const desktopHeight = desktop.offsetHeight;
+const halfDesktopWidth = desktopWidth / 2;
+const halfDesktopHeight = desktopHeight / 2;
+const windowWidth = Math.round(window.innerWidth * 0.7);
+const windowHeight = Math.round(window.innerHeight * 0.7);
 
 desktopFooter.addEventListener('wheel', (evt) => {
   evt.preventDefault();
@@ -34,18 +40,18 @@ desktop.addEventListener(events[deviceType].click, (evt) => {
 
 const setStartPosition = (elem) => {
   elem.classList.remove('window--collapsed');
-  elem.style.left = `${desktop.offsetWidth / 2 + initialWindowCounterHorisontal}px`;
-  elem.style.top = `${desktop.offsetHeight / 2 + initialWindowCounterVertical}px`;
-  elem.style.width = `${Math.round(window.innerWidth * 0.7)}px`;
-  elem.style.height = `${Math.round(window.innerHeight * 0.7)}px`;
-  if (initialWindowCounterHorisontal + (desktop.offsetWidth - elem.offsetWidth) / 2 + 10 + elem.offsetWidth >= desktop.offsetWidth) {
+  elem.style.left = `${halfDesktopWidth + initialWindowCounterHorisontal}px`;
+  elem.style.top = `${halfDesktopHeight + initialWindowCounterVertical}px`;
+  elem.style.width = `${windowWidth}px`;
+  elem.style.height = `${windowHeight}px`;
+  if (initialWindowCounterHorisontal + (desktopWidth - windowWidth) / 2 + 10 + windowWidth >= desktopWidth) {
     initialWindowCounterHorisontal = 0;
     offsetHorisontalCounter = 0;
   } else {
     initialWindowCounterHorisontal += 10;
     offsetHorisontalCounter += 1;
   }
-  if (initialWindowCounterVertical + (desktop.offsetHeight - elem.offsetHeight) / 2 + 30 + elem.offsetHeight >= desktop.offsetHeight) {
+  if (initialWindowCounterVertical + (desktopHeight - windowHeight) / 2 + 30 + windowHeight >= desktopHeight) {
     initialWindowCounterVertical = 0;
     offsetVerticalCounter = 0;
   } else {
@@ -101,21 +107,25 @@ function onFileOpen(evt) {
   };
 
   setCurrentWindowActive();
-
   const onMoveEvent = (e) => {
     if (moveElement === true) {
       const newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
       const newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
-      newWindow.style.left = `${newWindow.offsetLeft - (initialX - newX)}px`;
-      newWindow.style.top = `${newWindow.offsetTop - (initialY - newY)}px`;
+      const calcX = initialX - newX;
+      const calcY = initialY - newY;
+      const leftPosition = `${newWindow.offsetLeft - calcX}px`;
+      const topPosition = `${newWindow.offsetTop - calcY}px`;
+      newWindow.style.left = leftPosition;
+      newWindow.style.top = topPosition;
       initialX = newX;
       initialY = newY;
     }
   };
+  const onMoveThrottled = throttle(onMoveEvent, 10);
 
   const onMoveStop = () => {
-    desktop.removeEventListener(events[deviceType].move, onMoveEvent);
-    windowDraggableArea.removeEventListener(events[deviceType].up, onMoveStop);
+    document.removeEventListener(events[deviceType].move, onMoveThrottled);
+    document.removeEventListener(events[deviceType].up, onMoveStop);
     moveElement = false;
   };
 
@@ -128,8 +138,8 @@ function onFileOpen(evt) {
       moveElement = true;
       initialX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
       initialY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
-      desktop.addEventListener(events[deviceType].move, onMoveEvent);
-      windowDraggableArea.addEventListener(events[deviceType].up, onMoveStop);
+      document.addEventListener(events[deviceType].move, onMoveThrottled);
+      document.addEventListener(events[deviceType].up, onMoveStop);
     }
   }
 
