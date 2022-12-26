@@ -19,6 +19,13 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
+
+  @media (min-width: 768px) {
+    height: 60%;
+    justify-content: center;
+    max-width: 25%;
+    width: 50%;
+  }
 }
 
 .loading__logo {
