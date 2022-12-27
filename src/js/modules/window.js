@@ -1,7 +1,22 @@
 import { throttle } from './throttle.js';
-import { events, isTouchDevice, deviceType } from './checkDeviceType.js';
+import { isTouchDevice, deviceType } from './checkDeviceType.js';
 
 isTouchDevice();
+
+const events = {
+  mouse: {
+    down: 'mousedown',
+    move: 'mousemove',
+    up: 'mouseup',
+    click: 'click',
+  },
+  touch: {
+    down: 'touchstart',
+    move: 'touchmove',
+    up: 'touchend',
+    click: 'click',
+  },
+};
 
 const template = document.querySelector('.template');
 const desktop = document.querySelector('.desktop');
@@ -48,6 +63,7 @@ const setStartPosition = (elem) => {
 };
 
 const onFileOpen = (evt) => {
+  evt.preventDefault();
   evt.target.classList.remove('file');
   evt.target.classList.add('file--opened');
   const fileLabel = evt.target.querySelector('.file__label');
@@ -179,6 +195,7 @@ const onFileOpen = (evt) => {
   reference.addEventListener(events[deviceType].click, onCollapseButton);
 
   newWindow.addEventListener(events[deviceType].down, (e) => {
+    e.preventDefault();
     if (e.target.closest('.window__draggable-area')) {
       onWindowDrag(e);
     }
