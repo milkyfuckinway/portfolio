@@ -6,8 +6,9 @@
 
 .file__label {
   display: grid;
-  gap: 5px;
-  grid-template-rows: 40px 30px;
+  flex-direction: column;
+  grid-template-rows: 50px 1fr;
+  height: 100%;
   pointer-events: none;
 
   &:hover {
@@ -41,11 +42,13 @@
   pointer-events: none;
   text-align: center;
   text-overflow: ellipsis;
+  -webkit-touch-callout: none;
   user-select: none;
   width: 100%;
 }
 
 .file--opened {
   pointer-events: none;
+  -webkit-touch-callout: none;
   user-select: none;
 }

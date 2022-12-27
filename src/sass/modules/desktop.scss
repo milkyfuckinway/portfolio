@@ -11,19 +11,6 @@
 
 .desktop__wrapper {
   background-color: rgb(1 142 149);
-  display: grid;
-  flex-grow: 1;
-  gap: 5px;
-  grid-template-columns: repeat(auto-fill, 75px);
-  grid-template-rows: repeat(auto-fill, 75px);
-  overflow-x: auto;
-  padding: 10px;
-  scrollbar-width: none;
-  width: 100%;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 
 .desktop__footer {

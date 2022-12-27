@@ -1,0 +1,38 @@
+.grid {
+  display: grid !important;
+  flex-grow: 1;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 10px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 500px) {
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+    grid-template-rows: repeat(auto-fill, 75px);
+  }
+}
+
+.grid--folder {
+  display: grid !important;
+  flex-grow: 1;
+  gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fill, 75px);
+  overflow-x: auto;
+  padding: 10px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 500px) {
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+  }
+}
+
+//

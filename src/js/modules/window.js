@@ -30,6 +30,9 @@ const halfDesktopHeight = desktopHeight / 2;
 const windowWidth = Math.round(window.innerWidth * 0.7);
 const windowHeight = Math.round(window.innerHeight * 0.7);
 
+const fileList = document.querySelectorAll('.file');
+fileList[1].children[0].classList.add('file__label--active');
+
 let initialIndex = 0;
 let initialX = 0;
 let initialY = 0;
@@ -85,7 +88,7 @@ const onFileOpen = (evt) => {
   clonedTargetContent.classList.add('window__content');
   clonedTargetContent.classList.remove('file__content');
   if (evt.target.classList.contains('file--folder')) {
-    clonedTargetContent.classList.add('window__content--folder');
+    clonedTargetContent.classList.add('grid--folder');
   }
 
   const setCurrentWindowActive = () => {
