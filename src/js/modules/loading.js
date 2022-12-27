@@ -5,5 +5,3 @@ const removeLoadingScreen = () => {
 setTimeout(() => {
   removeLoadingScreen();
 }, 3000);
-
-removeLoadingScreen();

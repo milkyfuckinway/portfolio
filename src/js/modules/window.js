@@ -27,8 +27,25 @@ const desktopWidth = desktop.offsetWidth;
 const desktopHeight = desktop.offsetHeight;
 const halfDesktopWidth = desktopWidth / 2;
 const halfDesktopHeight = desktopHeight / 2;
-const windowWidth = Math.round(window.innerWidth * 0.7);
-const windowHeight = Math.round(window.innerHeight * 0.7);
+
+const coefficientWidth = () => {
+  if (desktopWidth < 500) {
+    return 0.9;
+  } else {
+    return 0.5;
+  }
+};
+
+const coefficientHeight = () => {
+  if (desktopWidth < 500) {
+    return 0.7;
+  } else {
+    return 0.5;
+  }
+};
+
+const windowWidth = Math.round(window.innerWidth * coefficientWidth());
+const windowHeight = Math.round(window.innerHeight * coefficientHeight());
 
 const fileList = document.querySelectorAll('.file');
 fileList[1].children[0].classList.add('file__label--active');
@@ -53,14 +70,14 @@ const setStartPosition = (elem) => {
     initialWindowCounterHorizontal = 0;
     offsetHorizontalCounter = 0;
   } else {
-    initialWindowCounterHorizontal += 10;
+    initialWindowCounterHorizontal += 8;
     offsetHorizontalCounter += 1;
   }
   if (initialWindowCounterVertical + (desktopHeight - windowHeight) / 2 + 30 + windowHeight >= desktopHeight) {
     initialWindowCounterVertical = 0;
     offsetVerticalCounter = 0;
   } else {
-    initialWindowCounterVertical += 30;
+    initialWindowCounterVertical += 40;
     offsetVerticalCounter += 1;
   }
 };
@@ -71,14 +88,15 @@ const onFileOpen = (evt) => {
   evt.target.classList.add('file--opened');
   const fileLabel = evt.target.querySelector('.file__label');
   const fileName = evt.target.querySelector('.file__name');
-  const pathIcon = evt.target.querySelector('.file__icon').cloneNode(true);
+  const fileIcon = evt.target.querySelector('.file__icon').cloneNode(true);
+  fileIcon.classList.remove('file__icon--desktop');
   const newWindow = windowTemplate.cloneNode(true);
   const newWindowPath = newWindow.querySelector('.window__path');
   const windowHeader = newWindow.querySelector('.window__header');
   const windowDraggableArea = windowHeader.querySelector('.window__draggable-area');
   const reference = referenceTemplate.cloneNode(true);
   newWindowPath.textContent = fileName.textContent;
-  windowDraggableArea.insertBefore(pathIcon, newWindowPath);
+  windowDraggableArea.insertBefore(fileIcon, newWindowPath);
   desktop.appendChild(newWindow);
   setStartPosition(newWindow);
   fileLabel.classList.add('file__label--active');
@@ -191,6 +209,7 @@ const onFileOpen = (evt) => {
   };
 
   const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
+  referenceIcon.classList.remove('file__icon--desktop');
   const referenceText = reference.querySelector('.reference__text');
   referenceText.textContent = fileName.textContent;
   reference.insertBefore(referenceIcon, referenceText);

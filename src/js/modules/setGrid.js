@@ -1,24 +1,18 @@
-import { throttle } from './throttle.js';
-
 const setGrid = () => {
   const desktopWrapper = document.querySelector('.desktop__wrapper');
   const gridWidth = desktopWrapper.offsetWidth;
   if (gridWidth < 370) {
     const gridElementWidth = `${(gridWidth - 20 - 3 * 5) / 4}px`;
-    desktopWrapper.style.gridTemplateColumns = `repeat(4, ${gridElementWidth})`;
-    desktopWrapper.style.gridTemplateRows = `repeat(auto-fill, ${gridElementWidth})`;
+    document.documentElement.style.setProperty('--gridbox', `${gridElementWidth}`);
+    document.documentElement.style.setProperty('--gridcount', `${4}`);
   }
-  if (gridWidth > 371 && gridWidth < 501) {
+  if (gridWidth > 371 && gridWidth < 500) {
     const gridElementWidth = `${(gridWidth - 20 - 4 * 5) / 5}px`;
-    desktopWrapper.style.gridTemplateColumns = `repeat(5, ${gridElementWidth})`;
-    desktopWrapper.style.gridTemplateRows = `repeat(auto-fill, ${gridElementWidth})`;
-  }
-  if (gridWidth > 501) {
-    desktopWrapper.style.gridTemplateColumns = '';
-    desktopWrapper.style.gridTemplateRows = '';
+    document.documentElement.style.setProperty('--gridbox', `${gridElementWidth}`);
+    document.documentElement.style.setProperty('--gridcount', `${5}`);
   }
 };
 
 setGrid();
 
-window.addEventListener('resize', throttle(setGrid, 100));
+export { setGrid };

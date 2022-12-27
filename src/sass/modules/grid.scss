@@ -2,6 +2,8 @@
   display: grid !important;
   flex-grow: 1;
   gap: 5px;
+  grid-template-columns: repeat(var(--gridcount), var(--gridbox));
+  grid-template-rows: repeat(auto-fill, var(--gridbox));
   overflow-x: auto;
   padding: 10px;
   scrollbar-width: none;
@@ -20,8 +22,8 @@
   display: grid !important;
   flex-grow: 1;
   gap: 5px;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(auto-fill, 75px);
+  grid-template-columns: repeat(auto-fill, var(--gridbox));
+  grid-template-rows: repeat(auto-fill, var(--gridbox));
   overflow-x: auto;
   padding: 10px;
   scrollbar-width: none;
@@ -32,7 +34,6 @@
 
   @media (min-width: 500px) {
     grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+    grid-template-rows: repeat(auto-fill, 75px);
   }
 }
-
-//
