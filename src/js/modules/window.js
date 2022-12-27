@@ -195,7 +195,6 @@ const onFileOpen = (evt) => {
   reference.addEventListener(events[deviceType].click, onCollapseButton);
 
   newWindow.addEventListener(events[deviceType].down, (e) => {
-    e.preventDefault();
     if (e.target.closest('.window__draggable-area')) {
       onWindowDrag(e);
     }
