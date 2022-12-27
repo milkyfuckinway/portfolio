@@ -15,28 +15,28 @@ const halfDesktopHeight = desktopHeight / 2;
 const windowWidth = Math.round(window.innerWidth * 0.7);
 const windowHeight = Math.round(window.innerHeight * 0.7);
 
-let initialzIndex = 0;
+let initialIndex = 0;
 let initialX = 0;
 let initialY = 0;
 let lastReference;
 let moveElement = false;
 let initialWindowCounterVertical = 0;
-let initialWindowCounterHorisontal = 0;
+let initialWindowCounterHorizontal = 0;
 let offsetVerticalCounter = 0;
-let offsetHorisontalCounter = 0;
+let offsetHorizontalCounter = 0;
 
 const setStartPosition = (elem) => {
   elem.classList.remove('window--collapsed');
-  elem.style.left = `${halfDesktopWidth + initialWindowCounterHorisontal}px`;
+  elem.style.left = `${halfDesktopWidth + initialWindowCounterHorizontal}px`;
   elem.style.top = `${halfDesktopHeight + initialWindowCounterVertical}px`;
   elem.style.width = `${windowWidth}px`;
   elem.style.height = `${windowHeight}px`;
-  if (initialWindowCounterHorisontal + (desktopWidth - windowWidth) / 2 + 10 + windowWidth >= desktopWidth) {
-    initialWindowCounterHorisontal = 0;
-    offsetHorisontalCounter = 0;
+  if (initialWindowCounterHorizontal + (desktopWidth - windowWidth) / 2 + 10 + windowWidth >= desktopWidth) {
+    initialWindowCounterHorizontal = 0;
+    offsetHorizontalCounter = 0;
   } else {
-    initialWindowCounterHorisontal += 10;
-    offsetHorisontalCounter += 1;
+    initialWindowCounterHorizontal += 10;
+    offsetHorizontalCounter += 1;
   }
   if (initialWindowCounterVertical + (desktopHeight - windowHeight) / 2 + 30 + windowHeight >= desktopHeight) {
     initialWindowCounterVertical = 0;
@@ -74,9 +74,9 @@ const onFileOpen = (evt) => {
 
   const setCurrentWindowActive = () => {
     lastReference = reference;
-    const newzIndex = initialzIndex + 1;
-    newWindow.style.zIndex = `${newzIndex}`;
-    initialzIndex = newzIndex;
+    const newIndex = initialIndex + 1;
+    newWindow.style.zIndex = `${newIndex}`;
+    initialIndex = newIndex;
     reference.classList.add('reference--active');
     desktop.querySelectorAll('.window--active').forEach((a) => {
       a.classList.remove('window--active');
@@ -165,9 +165,9 @@ const onFileOpen = (evt) => {
       offsetVerticalCounter -= 1;
       initialWindowCounterVertical -= 30;
     }
-    if (offsetHorisontalCounter > 0) {
-      offsetHorisontalCounter -= 1;
-      initialWindowCounterHorisontal -= 10;
+    if (offsetHorizontalCounter > 0) {
+      offsetHorizontalCounter -= 1;
+      initialWindowCounterHorizontal -= 10;
     }
   };
 
