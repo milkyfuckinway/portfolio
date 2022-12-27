@@ -43,6 +43,8 @@ video {
   padding: 0;
   pointer-events: none;
   position: absolute;
+  -webkit-touch-callout: none;
+  user-select: none;
   white-space: nowrap;
   width: 1px;
 }

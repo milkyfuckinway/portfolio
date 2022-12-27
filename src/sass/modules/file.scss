@@ -1,5 +1,6 @@
 .file {
   cursor: pointer;
+  -webkit-touch-callout: none;
   user-select: none;
 }
 
@@ -40,5 +41,11 @@
   pointer-events: none;
   text-align: center;
   text-overflow: ellipsis;
+  user-select: none;
   width: 100%;
+}
+
+.file--opened {
+  pointer-events: none;
+  user-select: none;
 }
