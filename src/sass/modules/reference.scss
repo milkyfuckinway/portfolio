@@ -4,6 +4,7 @@
   border-left: 2px inset rgb(0 0 0 / 50%);
   border-right: 2px inset rgb(255 255 255 / 50%);
   border-top: 2px inset rgb(255 255 255 / 50%);
+  cursor: pointer;
   display: grid;
   flex-shrink: 0;
   gap: 5px;
@@ -21,11 +22,13 @@
 }
 
 .reference__text {
-  align-items: center;
-  display: flex;
   font-size: 12px;
+  line-height: 200%;
   overflow: hidden;
+  pointer-events: none;
   text-overflow: ellipsis;
+  -webkit-touch-callout: none;
+  user-select: none;
+  vertical-align: middle;
   white-space: nowrap;
-  word-wrap: break-word;
 }
