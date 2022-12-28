@@ -2,6 +2,10 @@
   cursor: pointer;
   -webkit-touch-callout: none;
   user-select: none;
+
+  &:hover {
+    outline: 1px dotted #000000;
+  }
 }
 
 .file__label {
@@ -11,15 +15,10 @@
   grid-template-rows: 65% 25%;
   height: 100%;
   pointer-events: none;
-
-  &:hover {
-    outline: 1px dotted #000000;
-  }
 }
 
 .file__label--active {
-  background-color: #ececec;
-  box-shadow: -2px 2px 0 rgba($color: #000000, $alpha: 50%);
+  outline: 1px dotted #000000;
 }
 
 .file__icon {
@@ -30,10 +29,6 @@
 
 .file__icon--desktop {
   padding: 5px 10px;
-}
-
-.file__icon--ie {
-  background: url("../img/svg/ie.svg") center/contain no-repeat;
 }
 
 .file__icon svg {
@@ -51,7 +46,6 @@
   -webkit-touch-callout: none;
   user-select: none;
   white-space: nowrap;
-  width: 100%;
 }
 
 .file--opened {

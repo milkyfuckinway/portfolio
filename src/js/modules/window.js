@@ -46,8 +46,16 @@ const coefficientHeight = () => {
 
 const windowWidth = Math.round(window.innerWidth * coefficientWidth());
 const windowHeight = Math.round(window.innerHeight * coefficientHeight());
-
+const textIconTemplate = template.querySelector('.file__icon--text');
 const fileList = document.querySelectorAll('.file');
+fileList.forEach((file) => {
+  if (file.classList.contains('file--text')) {
+    const textIcon = textIconTemplate.cloneNode(true);
+    const fileLabel = file.querySelector('.file__label');
+    const fileName = file.querySelector('.file__name');
+    fileLabel.insertBefore(textIcon, fileName);
+  }
+});
 fileList[1].children[0].classList.add('file__label--active');
 
 let initialIndex = 0;
@@ -200,7 +208,7 @@ const onFileOpen = (evt) => {
     fileLabel.classList.remove('file__label--active');
     if (offsetVerticalCounter > 0) {
       offsetVerticalCounter -= 1;
-      initialWindowCounterVertical -= 30;
+      initialWindowCounterVertical -= 40;
     }
     if (offsetHorizontalCounter > 0) {
       offsetHorizontalCounter -= 1;
@@ -220,7 +228,7 @@ const onFileOpen = (evt) => {
     if (e.target.closest('.window__draggable-area')) {
       onWindowDrag(e);
     }
-    if (e.target.closest('.window__content')) {
+    if (e.target.closest('.window')) {
       setCurrentWindowActive();
     }
   });
