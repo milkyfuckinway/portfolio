@@ -47,16 +47,28 @@ const coefficientHeight = () => {
 const windowWidth = Math.round(window.innerWidth * coefficientWidth());
 const windowHeight = Math.round(window.innerHeight * coefficientHeight());
 const textIconTemplate = template.querySelector('.file__icon--text');
+const linkIconTemplate = template.querySelector('.file__icon--link');
+const folderIconTemplate = template.querySelector('.file__icon--folder');
 const fileList = document.querySelectorAll('.file');
-fileList.forEach((file) => {
-  if (file.classList.contains('file--text')) {
-    const textIcon = textIconTemplate.cloneNode(true);
-    const fileLabel = file.querySelector('.file__label');
-    const fileName = file.querySelector('.file__name');
-    fileLabel.insertBefore(textIcon, fileName);
+
+const setIcon = (item) => {
+  if (item.classList.contains('file--text')) {
+    return textIconTemplate;
   }
+  if (item.classList.contains('file--link')) {
+    return linkIconTemplate;
+  }
+  if (item.classList.contains('file--folder')) {
+    return folderIconTemplate;
+  }
+};
+
+fileList.forEach((file) => {
+  const textIcon = setIcon(file).cloneNode(true);
+  const fileLabel = file.querySelector('.file__label');
+  const fileName = file.querySelector('.file__name');
+  fileLabel.insertBefore(textIcon, fileName);
 });
-fileList[1].children[0].classList.add('file__label--active');
 
 let initialIndex = 0;
 let initialX = 0;
