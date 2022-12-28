@@ -43,7 +43,7 @@
   font-family: "helvetica-light";
   font-style: "light";
   font-weight: "300";
-  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
+  src: local("helvetica-light.woff"), url("../fonts/helvetica-light.woff") format("woff");
 }
 
 @font-face {
@@ -51,23 +51,7 @@
   font-family: "helvetica-light";
   font-style: "light";
   font-weight: "300";
-  src: local("helvetica-light.woff"), url("../fonts/helvetica-light.woff") format("woff");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "montserrat-black";
-  font-style: "black";
-  font-weight: "900";
-  src: local("montserrat-black.woff"), url("../fonts/montserrat-black.woff") format("woff");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "montserrat-black";
-  font-style: "black";
-  font-weight: "900";
-  src: local("montserrat-black.woff2"), url("../fonts/montserrat-black.woff2") format("woff2");
+  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
 }
 
 @font-face {
@@ -80,10 +64,10 @@
 
 @font-face {
   font-display: swap;
-  font-family: "montserrat-bold";
-  font-style: "bold";
-  font-weight: "700";
-  src: local("montserrat-bold.woff"), url("../fonts/montserrat-bold.woff") format("woff");
+  font-family: "montserrat-black";
+  font-style: "black";
+  font-weight: "900";
+  src: local("montserrat-black.woff"), url("../fonts/montserrat-black.woff") format("woff");
 }
 
 @font-face {
@@ -96,10 +80,18 @@
 
 @font-face {
   font-display: swap;
-  font-family: "montserrat-regular";
-  font-style: "regular";
-  font-weight: "400";
-  src: local("montserrat-regular.woff2"), url("../fonts/montserrat-regular.woff2") format("woff2");
+  font-family: "montserrat-bold";
+  font-style: "bold";
+  font-weight: "700";
+  src: local("montserrat-bold.woff"), url("../fonts/montserrat-bold.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "montserrat-black";
+  font-style: "black";
+  font-weight: "900";
+  src: local("montserrat-black.woff2"), url("../fonts/montserrat-black.woff2") format("woff2");
 }
 
 @font-face {
@@ -108,6 +100,14 @@
   font-style: "regular";
   font-weight: "400";
   src: local("montserrat-regular.woff"), url("../fonts/montserrat-regular.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "montserrat-regular";
+  font-style: "regular";
+  font-weight: "400";
+  src: local("montserrat-regular.woff2"), url("../fonts/montserrat-regular.woff2") format("woff2");
 }
 
 @font-face {
@@ -355,121 +355,6 @@ html {
   height: 100%;
 }
 
-.loading {
-  background: #000000;
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  z-index: 100000;
-}
-
-.loading__wrapper {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  gap: 30px;
-  height: 50%;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  left: 50%;
-  max-width: 300px;
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  width: 100%;
-}
-
-.loading__logo {
-  height: 100%;
-  width: 100%;
-}
-
-.loading__logo svg {
-  height: 100%;
-  width: 100%;
-}
-
-.loading__bar {
-  border: 2px solid #ffffff;
-  border-radius: 5px;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  height: 20px;
-  max-width: 300px;
-  overflow: hidden;
-  width: 100%;
-}
-
-.loading__boxes {
-  -webkit-animation: loading 1s linear infinite;
-  animation: loading 1s linear infinite;
-  height: 100%;
-  width: 100%;
-}
-
-.loading__box,
-.loading__box::before,
-.loading__box::after {
-  background: rgb(35, 76, 255);
-  height: 100%;
-  position: relative;
-  width: 10px;
-}
-
-.loading__box::before,
-.loading__box::after {
-  content: "";
-  position: absolute;
-}
-
-.loading__box::after {
-  left: 100%;
-  -webkit-transform: translateX(2px);
-  -ms-transform: translateX(2px);
-  transform: translateX(2px);
-}
-
-.loading__box::before {
-  right: 100%;
-  -webkit-transform: translateX(-2px);
-  -ms-transform: translateX(-2px);
-  transform: translateX(-2px);
-}
-
-@-webkit-keyframes loading {
-  0% {
-    -webkit-transform: translate(0%);
-    transform: translate(0%);
-  }
-
-  100% {
-    -webkit-transform: translate(100%);
-    transform: translate(100%);
-  }
-}
-
-@keyframes loading {
-  0% {
-    -webkit-transform: translate(0%);
-    transform: translate(0%);
-  }
-
-  100% {
-    -webkit-transform: translate(100%);
-    transform: translate(100%);
-  }
-}
-
 .main-content {
   height: 100%;
 }
@@ -480,6 +365,7 @@ html {
   border-left: 2px inset rgba(0, 0, 0, 0.5);
   border-right: 2px inset rgba(255, 255, 255, 0.5);
   border-top: 2px inset rgba(255, 255, 255, 0.5);
+  cursor: pointer;
   display: grid;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -498,18 +384,19 @@ html {
 }
 
 .reference__text {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   font-size: 12px;
+  line-height: 200%;
   overflow: hidden;
+  pointer-events: none;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
   white-space: nowrap;
-  word-wrap: break-word;
 }
 
 .window {
@@ -714,26 +601,6 @@ html {
   .grid--folder {
     grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
     grid-template-rows: repeat(auto-fill, 75px);
-  }
-
-@supports (-webkit-appearance:none) {
-
-}
-}
-
-@media (min-width: 768px) {
-  .loading__wrapper {
-    height: 60%;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    max-width: 25%;
-    width: 50%;
-  }
-
-  .loading__logo {
-    height: 60%;
-    width: 100%;
   }
 
 @supports (-webkit-appearance:none) {
