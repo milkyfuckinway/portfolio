@@ -6,10 +6,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const loaidngBar = document.querySelector('.loading__bar');
   loaidngBar.classList.remove('on-load');
   loaidngBar.classList.add('loaded');
+  createDesktop();
   setTimeout(() => {
     document.querySelector('.loading').remove();
   }, 2000);
-  createDesktop();
   // Utils
   // ---------------------------------
   // Modules

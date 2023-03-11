@@ -43,6 +43,14 @@
   font-family: "helvetica-light";
   font-style: "light";
   font-weight: "300";
+  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "helvetica-light";
+  font-style: "light";
+  font-weight: "300";
   src: local("helvetica-light.woff"), url("../fonts/helvetica-light.woff") format("woff");
 }
 
@@ -72,14 +80,6 @@
 
 @font-face {
   font-display: swap;
-  font-family: "helvetica-light";
-  font-style: "light";
-  font-weight: "300";
-  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
   font-family: "montserrat-bold";
   font-style: "bold";
   font-weight: "700";
@@ -104,18 +104,18 @@
 
 @font-face {
   font-display: swap;
-  font-family: "montserrat-regular";
-  font-style: "regular";
-  font-weight: "400";
-  src: local("montserrat-regular.woff2"), url("../fonts/montserrat-regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
   font-family: "montserrat-bold";
   font-style: "bold";
   font-weight: "700";
   src: local("montserrat-bold.woff2"), url("../fonts/montserrat-bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "montserrat-regular";
+  font-style: "regular";
+  font-weight: "400";
+  src: local("montserrat-regular.woff2"), url("../fonts/montserrat-regular.woff2") format("woff2");
 }
 
 :root {
