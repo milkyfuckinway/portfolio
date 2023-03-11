@@ -8,14 +8,6 @@
 
 @font-face {
   font-display: swap;
-  font-family: "neuemachina-regular";
-  font-style: "regular";
-  font-weight: "400";
-  src: local("NeueMachina-Regular.woff"), url("../fonts/NeueMachina-Regular.woff") format("woff");
-}
-
-@font-face {
-  font-display: swap;
   font-family: "neuemachina-ultrabold";
   font-style: "ultrabold";
   font-weight: "undefined";
@@ -24,10 +16,10 @@
 
 @font-face {
   font-display: swap;
-  font-family: "helvetica-light";
-  font-style: "light";
-  font-weight: "300";
-  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
+  font-family: "neuemachina-regular";
+  font-style: "regular";
+  font-weight: "400";
+  src: local("NeueMachina-Regular.woff"), url("../fonts/NeueMachina-Regular.woff") format("woff");
 }
 
 @font-face {
@@ -40,22 +32,6 @@
 
 @font-face {
   font-display: swap;
-  font-family: "helvetica-bold";
-  font-style: "bold";
-  font-weight: "700";
-  src: local("helvetica-bold.woff2"), url("../fonts/helvetica-bold.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "helvetica-regular";
-  font-style: "regular";
-  font-weight: "400";
-  src: local("helvetica-regular.woff2"), url("../fonts/helvetica-regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
   font-family: "helvetica-light";
   font-style: "light";
   font-weight: "300";
@@ -64,10 +40,18 @@
 
 @font-face {
   font-display: swap;
-  font-family: "montserrat-black";
-  font-style: "black";
-  font-weight: "900";
-  src: local("montserrat-black.woff2"), url("../fonts/montserrat-black.woff2") format("woff2");
+  font-family: "helvetica-bold";
+  font-style: "bold";
+  font-weight: "700";
+  src: local("helvetica-bold.woff2"), url("../fonts/helvetica-bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "helvetica-light";
+  font-style: "light";
+  font-weight: "300";
+  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
 }
 
 @font-face {
@@ -84,6 +68,22 @@
   font-style: "black";
   font-weight: "900";
   src: local("montserrat-black.woff"), url("../fonts/montserrat-black.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "helvetica-regular";
+  font-style: "regular";
+  font-weight: "400";
+  src: local("helvetica-regular.woff2"), url("../fonts/helvetica-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "montserrat-black";
+  font-style: "black";
+  font-weight: "900";
+  src: local("montserrat-black.woff2"), url("../fonts/montserrat-black.woff2") format("woff2");
 }
 
 @font-face {
