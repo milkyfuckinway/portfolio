@@ -24,10 +24,18 @@
 
 @font-face {
   font-display: swap;
-  font-family: "helvetica-bold";
-  font-style: "bold";
-  font-weight: "700";
-  src: local("helvetica-bold.woff"), url("../fonts/helvetica-bold.woff") format("woff");
+  font-family: "helvetica-light";
+  font-style: "light";
+  font-weight: "300";
+  src: local("helvetica-light.woff"), url("../fonts/helvetica-light.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "helvetica-light";
+  font-style: "light";
+  font-weight: "300";
+  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
 }
 
 @font-face {
@@ -40,10 +48,18 @@
 
 @font-face {
   font-display: swap;
-  font-family: "helvetica-light";
-  font-style: "light";
-  font-weight: "300";
-  src: local("helvetica-light.woff2"), url("../fonts/helvetica-light.woff2") format("woff2");
+  font-family: "helvetica-bold";
+  font-style: "bold";
+  font-weight: "700";
+  src: local("helvetica-bold.woff"), url("../fonts/helvetica-bold.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "helvetica-regular";
+  font-style: "regular";
+  font-weight: "400";
+  src: local("helvetica-regular.woff2"), url("../fonts/helvetica-regular.woff2") format("woff2");
 }
 
 @font-face {
@@ -59,39 +75,7 @@
   font-family: "montserrat-black";
   font-style: "black";
   font-weight: "900";
-  src: local("montserrat-black.woff2"), url("../fonts/montserrat-black.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "helvetica-light";
-  font-style: "light";
-  font-weight: "300";
-  src: local("helvetica-light.woff"), url("../fonts/helvetica-light.woff") format("woff");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "montserrat-black";
-  font-style: "black";
-  font-weight: "900";
   src: local("montserrat-black.woff"), url("../fonts/montserrat-black.woff") format("woff");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "helvetica-regular";
-  font-style: "regular";
-  font-weight: "400";
-  src: local("helvetica-regular.woff2"), url("../fonts/helvetica-regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "montserrat-regular";
-  font-style: "regular";
-  font-weight: "400";
-  src: local("montserrat-regular.woff"), url("../fonts/montserrat-regular.woff") format("woff");
 }
 
 @font-face {
@@ -108,6 +92,22 @@
   font-style: "bold";
   font-weight: "700";
   src: local("montserrat-bold.woff2"), url("../fonts/montserrat-bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "montserrat-black";
+  font-style: "black";
+  font-weight: "900";
+  src: local("montserrat-black.woff2"), url("../fonts/montserrat-black.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "montserrat-regular";
+  font-style: "regular";
+  font-weight: "400";
+  src: local("montserrat-regular.woff"), url("../fonts/montserrat-regular.woff") format("woff");
 }
 
 @font-face {
