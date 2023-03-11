@@ -3,13 +3,13 @@ import './modules/onResize.js';
 import { createDesktop } from './modules/window.js';
 
 window.addEventListener('DOMContentLoaded', () => {
+  createDesktop();
   const loaidngBar = document.querySelector('.loading__bar');
   loaidngBar.classList.remove('on-load');
   loaidngBar.classList.add('loaded');
-  document.querySelector('.loading').remove();
-  createDesktop();
+  // document.querySelector('.loading').remove();
   setTimeout(() => {
-    // document.querySelector('.loading').remove();
+    document.querySelector('.loading').remove();
   }, 2000);
   // Utils
   // ---------------------------------
