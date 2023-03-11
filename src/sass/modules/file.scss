@@ -4,7 +4,7 @@
   user-select: none;
 
   &:hover {
-    outline: 1px dotted #000000;
+    outline: 1px dotted $black;
   }
 }
 
@@ -18,7 +18,7 @@
 }
 
 .file__label--active {
-  outline: 1px dotted #000000;
+  outline: 1px dotted $black;
 }
 
 .file__icon {

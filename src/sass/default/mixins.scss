@@ -7,3 +7,17 @@
     src: local("#{$file}"), url("../fonts/#{$file}") format("#{$format}");
   }
 }
+
+@mixin old-border($size: 2) {
+  border-bottom: #{$size}px inset rgb(0 0 0 / 50%);
+  border-left: #{$size}px inset rgb(0 0 0 / 50%);
+  border-right: #{$size}px inset rgb(255 255 255 / 50%);
+  border-top: #{$size}px inset rgb(255 255 255 / 50%);
+}
+
+@mixin old-border--active($size: 2) {
+  border-bottom: #{$size}px inset rgb(255 255 255 / 50%);
+  border-left: #{$size}px inset rgb(255 255 255 / 50%);
+  border-right: #{$size}px inset rgb(0 0 0 / 50%);
+  border-top: #{$size}px inset rgb(0 0 0 / 50%);
+}

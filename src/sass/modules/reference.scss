@@ -1,9 +1,6 @@
 .reference {
-  background-color: #c4c1bc;
-  border-bottom: 2px inset rgb(0 0 0 / 50%);
-  border-left: 2px inset rgb(0 0 0 / 50%);
-  border-right: 2px inset rgb(255 255 255 / 50%);
-  border-top: 2px inset rgb(255 255 255 / 50%);
+  @include old-border(2);
+  background-color: $background-light;
   cursor: pointer;
   display: grid;
   flex-shrink: 0;
@@ -14,11 +11,8 @@
 }
 
 .reference--active {
-  background-color: #b1aea8;
-  border-bottom: 2px inset rgb(255 255 255 / 50%);
-  border-left: 2px inset rgb(255 255 255 / 50%);
-  border-right: 2px inset rgb(0 0 0 / 50%);
-  border-top: 2px inset rgb(0 0 0 / 50%);
+  background-color: $background-hover;
+  @include old-border--active(2);
 }
 
 .reference__text {

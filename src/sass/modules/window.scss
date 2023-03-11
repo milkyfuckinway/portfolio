@@ -1,14 +1,11 @@
 .window {
-  background-color: #c4c1bc;
-  border-bottom: 2px inset rgb(0 0 0 / 50%);
-  border-left: 2px inset rgb(0 0 0 / 50%);
-  border-right: 2px inset rgb(255 255 255 / 50%);
-  border-top: 2px inset rgb(255 255 255 / 50%);
+  background-color: $background-light;
   display: flex;
   flex-direction: column;
   margin: 0;
   position: absolute;
   transform: translate(-50%, -50%);
+  @include old-border(2);
 }
 
 .window--collapsed {
@@ -25,7 +22,7 @@
 
 .window__header {
   align-items: center;
-  background-color: #828282;
+  background-color: $background-dark;
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
@@ -34,12 +31,12 @@
 }
 
 .window--active .window__header {
-  background-color: hsl(223deg 90% 40%);
+  background-color: $blue-windows;
 }
 
 .window__draggable-area {
   align-items: center;
-  color: #ffffff;
+  color: $white;
   display: grid;
   gap: 10px;
   grid-template-columns: 20px 1fr;
@@ -66,16 +63,13 @@
 }
 
 .window__button {
-  background-color: #c4c1bc;
-  border-bottom: 1px inset rgb(0 0 0 / 50%);
-  border-left: 1px inset rgb(0 0 0 / 50%);
-  border-right: 1px inset rgb(255 255 255 / 50%);
-  border-top: 1px inset rgb(255 255 255 / 50%);
+  background-color: $background-light;
   cursor: pointer;
   height: 24px;
   padding: 0;
   position: relative;
   width: 24px;
+  @include old-border(1);
 
   &::after,
   &::before {
@@ -85,24 +79,21 @@
 
   &:hover,
   &:active {
-    border-bottom: 1px inset rgb(255 255 255 / 50%);
-    border-left: 1px inset rgb(255 255 255 / 50%);
-    border-right: 1px inset rgb(0 0 0 / 50%);
-    border-top: 1px inset rgb(0 0 0 / 50%);
+    @include old-border--active(1);
   }
 
   &:hover {
-    background-color: #a8a8a8;
+    background-color: $background-hover;
   }
 
   &:active {
-    background-color: hsl(37deg 6% 60%);
+    background-color: $background-dark;
   }
 }
 
 .window__button--collapse {
   &::after {
-    background-color: #000000;
+    background-color: $black;
     bottom: 4px;
     height: 2px;
     left: 50%;
@@ -114,7 +105,7 @@
 .window__button--expand {
   &::after {
     background-color: transparent;
-    border: 2px solid #000000;
+    border: 2px solid $black;
     bottom: 2px;
     height: 70%;
     left: 50%;
@@ -127,7 +118,7 @@
 .window__button--close {
   &::after,
   &::before {
-    background-color: #000000;
+    background-color: $black;
     bottom: 2px;
     height: 2px;
     left: 50%;
@@ -146,7 +137,7 @@
 }
 
 .window__content {
-  background-color: #ffffff;
+  background-color: $white;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

@@ -1,0 +1,85 @@
+.loading {
+  align-items: center;
+  background-color: $desktop-color;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 100000;
+}
+
+.loading__content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  justify-content: space-between;
+  width: calc(100vh - 50px);
+}
+
+.loading__logo {
+  background-image: url("./../../img/svg/windows-logo.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  height: 200px;
+  width: 200px;
+}
+
+@keyframes loading {
+  0% {
+    left: -100px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes finish {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.loading__bar.on-load {
+  background-color: $background-dark;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  width: calc(100% - 50px);
+  @include old-border(1);
+
+  &::before {
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: loading;
+    animation-timing-function: linear;
+    background-color: $background-light;
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 100px;
+  }
+}
+
+.loading__bar.loaded {
+  background-color: $background-dark;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  width: calc(100% - 50px);
+  @include old-border(1);
+
+  &::before {
+    animation-duration: 2s;
+    animation-name: finish;
+    background-color: $background-light;
+    content: "";
+    height: 100%;
+    position: absolute;
+  }
+}
