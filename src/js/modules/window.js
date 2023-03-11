@@ -29,7 +29,7 @@ const createDesktop = () => {
   const halfDesktopHeight = desktopHeight / 2;
 
   const coefficientWidth = () => {
-    if (desktopWidth < 500) {
+    if (desktopWidth < 800) {
       return 0.9;
     } else {
       return 0.5;
@@ -37,7 +37,7 @@ const createDesktop = () => {
   };
 
   const coefficientHeight = () => {
-    if (desktopWidth < 500) {
+    if (desktopWidth < 800) {
       return 0.7;
     } else {
       return 0.5;

@@ -8,6 +8,10 @@
   }
 }
 
+.file__content {
+  @include hidden;
+}
+
 .file__label {
   display: grid;
   flex-direction: column;
