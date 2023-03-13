@@ -2,50 +2,29 @@ import { throttle } from './throttle.js';
 import { isTouchDevice, deviceType } from './checkDeviceType.js';
 
 isTouchDevice();
-const createDesktop = () => {
-  const events = {
-    mouse: {
-      down: 'mousedown',
-      move: 'mousemove',
-      up: 'mouseup',
-      click: 'click',
-    },
-    touch: {
-      down: 'touchstart',
-      move: 'touchmove',
-      up: 'touchend',
-      click: 'click',
-    },
-  };
 
+const events = {
+  mouse: {
+    down: 'mousedown',
+    move: 'mousemove',
+    up: 'mouseup',
+    click: 'click',
+  },
+  touch: {
+    down: 'touchstart',
+    move: 'touchmove',
+    up: 'touchend',
+    click: 'click',
+  },
+};
+
+const createDesktop = () => {
   const template = document.querySelector('.template');
   const desktop = document.querySelector('.desktop');
   const desktopFooter = desktop.querySelector('.desktop__footer');
   const windowTemplate = template.querySelector('.window');
   const referenceTemplate = template.querySelector('.reference');
-  const desktopWidth = desktop.offsetWidth;
-  const desktopHeight = desktop.offsetHeight;
-  const halfDesktopWidth = desktopWidth / 2;
-  const halfDesktopHeight = desktopHeight / 2;
 
-  const coefficientWidth = () => {
-    if (desktopWidth < 800) {
-      return 0.9;
-    } else {
-      return 0.5;
-    }
-  };
-
-  const coefficientHeight = () => {
-    if (desktopWidth < 800) {
-      return 0.7;
-    } else {
-      return 0.5;
-    }
-  };
-
-  const windowWidth = Math.round(window.innerWidth * coefficientWidth());
-  const windowHeight = Math.round(window.innerHeight * coefficientHeight());
   const textIconTemplate = template.querySelector('.file__icon--text');
   const linkIconTemplate = template.querySelector('.file__icon--link');
   const folderIconTemplate = template.querySelector('.file__icon--folder');
@@ -75,31 +54,40 @@ const createDesktop = () => {
   let initialY = 0;
   let lastReference;
   let moveElement = false;
-  let initialWindowCounterVertical = 0;
-  let initialWindowCounterHorizontal = 0;
-  let offsetVerticalCounter = 0;
-  let offsetHorizontalCounter = 0;
 
   const setStartPosition = (elem) => {
+    const coefficientWidth = () => {
+      if (window.innerWidth < 800) {
+        return 0.9;
+      } else {
+        return 0.7;
+      }
+    };
+
+    const coefficientHeight = () => {
+      if (window.innerWidth < 800) {
+        return 0.7;
+      } else {
+        return 0.8;
+      }
+    };
+
     elem.classList.remove('window--collapsed');
-    elem.style.left = `${halfDesktopWidth + initialWindowCounterHorizontal}px`;
-    elem.style.top = `${halfDesktopHeight + initialWindowCounterVertical}px`;
-    elem.style.width = `${windowWidth}px`;
-    elem.style.height = `${windowHeight}px`;
-    if (initialWindowCounterHorizontal + (desktopWidth - windowWidth) / 2 + 10 + windowWidth >= desktopWidth) {
-      initialWindowCounterHorizontal = 0;
-      offsetHorizontalCounter = 0;
-    } else {
-      initialWindowCounterHorizontal += 8;
-      offsetHorizontalCounter += 1;
-    }
-    if (initialWindowCounterVertical + (desktopHeight - windowHeight) / 2 + 30 + windowHeight >= desktopHeight) {
-      initialWindowCounterVertical = 0;
-      offsetVerticalCounter = 0;
-    } else {
-      initialWindowCounterVertical += 40;
-      offsetVerticalCounter += 1;
-    }
+
+    const setSize = () => {
+      const windowWidth = Math.round(window.innerWidth * coefficientWidth());
+      const windowHeight = Math.round(window.innerHeight * coefficientHeight());
+      elem.style.left = `${window.innerWidth / 2}px`;
+      elem.style.top = `${window.innerHeight / 2}px`;
+      elem.style.width = `${windowWidth}px`;
+      elem.style.height = `${windowHeight}px`;
+    };
+
+    setSize();
+
+    window.addEventListener('resize', () => {
+      setSize();
+    });
   };
 
   const onFileOpen = (evt) => {
@@ -125,6 +113,7 @@ const createDesktop = () => {
     clonedTargetContent.classList.remove('visually-hidden');
     clonedTargetContent.classList.add('window__content');
     clonedTargetContent.classList.remove('file__content');
+
     if (evt.target.classList.contains('file--folder')) {
       clonedTargetContent.classList.add('grid--folder');
     }
@@ -218,14 +207,6 @@ const createDesktop = () => {
       newWindow.remove();
       reference.remove();
       fileLabel.classList.remove('file__label--active');
-      if (offsetVerticalCounter > 0) {
-        offsetVerticalCounter -= 1;
-        initialWindowCounterVertical -= 40;
-      }
-      if (offsetHorizontalCounter > 0) {
-        offsetHorizontalCounter -= 1;
-        initialWindowCounterHorizontal -= 10;
-      }
     };
 
     const referenceIcon = evt.target.querySelector('.file__icon').cloneNode(true);
