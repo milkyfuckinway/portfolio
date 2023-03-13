@@ -2,9 +2,11 @@
   background-color: $background-light;
   display: flex;
   flex-direction: column;
+  height: var(--window-height);
   margin: 0;
   position: absolute;
   transform: translate(-50%, -50%);
+  width: var(--window-width);
   @include old-border(2);
 }
 

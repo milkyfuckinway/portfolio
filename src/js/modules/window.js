@@ -1,22 +1,6 @@
 import { throttle } from './throttle.js';
-import { isTouchDevice, deviceType } from './checkDeviceType.js';
-
-isTouchDevice();
-
-const events = {
-  mouse: {
-    down: 'mousedown',
-    move: 'mousemove',
-    up: 'mouseup',
-    click: 'click',
-  },
-  touch: {
-    down: 'touchstart',
-    move: 'touchmove',
-    up: 'touchend',
-    click: 'click',
-  },
-};
+import { isTouchDevice, deviceType, events } from './checkDeviceType.js';
+import { setPosition, setSize } from './positionFunctions.js';
 
 const createDesktop = () => {
   const template = document.querySelector('.template');
@@ -24,13 +8,13 @@ const createDesktop = () => {
   const desktopFooter = desktop.querySelector('.desktop__footer');
   const windowTemplate = template.querySelector('.window');
   const referenceTemplate = template.querySelector('.reference');
-
-  const textIconTemplate = template.querySelector('.file__icon--text');
-  const linkIconTemplate = template.querySelector('.file__icon--link');
-  const folderIconTemplate = template.querySelector('.file__icon--folder');
   const fileList = document.querySelectorAll('.file');
 
   const setIcon = (item) => {
+    const textIconTemplate = template.querySelector('.file__icon--text');
+    const linkIconTemplate = template.querySelector('.file__icon--link');
+    const folderIconTemplate = template.querySelector('.file__icon--folder');
+
     if (item.classList.contains('file--text')) {
       return textIconTemplate;
     }
@@ -56,38 +40,9 @@ const createDesktop = () => {
   let moveElement = false;
 
   const setStartPosition = (elem) => {
-    const coefficientWidth = () => {
-      if (window.innerWidth < 800) {
-        return 0.9;
-      } else {
-        return 0.7;
-      }
-    };
-
-    const coefficientHeight = () => {
-      if (window.innerWidth < 800) {
-        return 0.7;
-      } else {
-        return 0.8;
-      }
-    };
-
     elem.classList.remove('window--collapsed');
-
-    const setSize = () => {
-      const windowWidth = Math.round(window.innerWidth * coefficientWidth());
-      const windowHeight = Math.round(window.innerHeight * coefficientHeight());
-      elem.style.left = `${window.innerWidth / 2}px`;
-      elem.style.top = `${window.innerHeight / 2}px`;
-      elem.style.width = `${windowWidth}px`;
-      elem.style.height = `${windowHeight}px`;
-    };
-
     setSize();
-
-    window.addEventListener('resize', () => {
-      setSize();
-    });
+    setPosition(elem);
   };
 
   const onFileOpen = (evt) => {
@@ -218,7 +173,7 @@ const createDesktop = () => {
     reference.addEventListener(events[deviceType].click, onCollapseButton);
 
     newWindow.addEventListener(events[deviceType].down, (e) => {
-      if (e.target.closest('.window__draggable-area')) {
+      if (e.target.closest('[data-draggable-area]')) {
         onWindowDrag(e);
       }
       if (e.target.closest('.window')) {
@@ -227,13 +182,13 @@ const createDesktop = () => {
     });
 
     newWindow.addEventListener(events[deviceType].click, (e) => {
-      if (e.target.closest('.window__button--collapse')) {
+      if (e.target.closest('[data-button-collapse]')) {
         onCollapseButton();
       }
-      if (e.target.closest('.window__button--close')) {
+      if (e.target.closest('[data-button-close]')) {
         onCloseButton();
       }
-      if (e.target.closest('.window__button--expand')) {
+      if (e.target.closest('[data-button-expand]')) {
         onExpandButton();
       }
     });

@@ -13,4 +13,19 @@ const isTouchDevice = () => {
 
 isTouchDevice();
 
-export { deviceType, isTouchDevice };
+const events = {
+  mouse: {
+    down: 'mousedown',
+    move: 'mousemove',
+    up: 'mouseup',
+    click: 'click',
+  },
+  touch: {
+    down: 'touchstart',
+    move: 'touchmove',
+    up: 'touchend',
+    click: 'click',
+  },
+};
+
+export { deviceType, isTouchDevice, events };
